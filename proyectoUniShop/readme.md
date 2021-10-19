@@ -1,0 +1,3 @@
+#proyecto final programacion avanzada
+
+Este proyecto contiene el codigo del aplicativo que representa el proyecto final del espacio academico
