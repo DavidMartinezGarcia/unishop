@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Subasta {
+public class Subasta implements Serializable {
 
     @Id
     @Column(nullable = false)
@@ -31,4 +32,9 @@ public class Subasta {
     @OneToMany(mappedBy = "subasta")
     @ToString.Exclude
     private List<Oferta> listaPujas;
+
+    public Subasta(Producto producto, Integer tiempoLimite) {
+        this.producto = producto;
+        this.tiempoLimite = tiempoLimite;
+    }
 }

@@ -60,4 +60,14 @@ public class Usuario implements Serializable {
 
     @ManyToMany(mappedBy = "listaUsuarios")
     private List<Producto> listaFavoritos;
+
+    public Usuario(Ciudad ciudad, String nombre, String email, List<String> telefono, String contrasenia, TipoUsuario tipoUsuario) {
+
+        this.ciudad = ciudad;
+        this.nombre = nombre;
+        this.email = email;
+        this.telefono = telefono;
+        this.contrasenia = contrasenia;
+        this.tipoUsuario = tipoUsuario;
+    }
 }

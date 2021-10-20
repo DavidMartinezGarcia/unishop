@@ -3,6 +3,7 @@ package co.edu.uniquindio.unishop.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -11,12 +12,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Mensaje {
+public class Mensaje implements Serializable {
     @Id
     @Column(nullable = false)
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer codigoMensaje;
+    private Integer codigo;
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDate fecha;
@@ -27,5 +28,9 @@ public class Mensaje {
     @ManyToOne
     private Chat chat;
 
+    public Mensaje(LocalDate fecha, String mensaje) {
 
+        this.fecha = fecha;
+        this.mensaje = mensaje;
+    }
 }

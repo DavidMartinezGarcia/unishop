@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Producto {
+public class Producto implements Serializable {
 
     @Id
     @Column(nullable = false)
@@ -44,6 +46,7 @@ public class Producto {
     @Column(nullable = false)
     private Date fechaLimite;
 
+    @Enumerated(EnumType.STRING)
     @JoinColumn(nullable = false)
     private Ciudad ubicacion;
 
@@ -51,7 +54,6 @@ public class Producto {
     @OneToMany(mappedBy = "producto")
     private List<Comentario> comentarios;
 
-    @Positive
     @Column(nullable = false)
     private Integer descuento;
 
@@ -64,7 +66,21 @@ public class Producto {
 
     @ManyToMany
     private List<Usuario> listaUsuarios;
-    //@ManyToMany
-    //@ToString.Exclude
-    //private List<Categoria> categorias;
+
+
+    @ToString.Exclude
+    private Categoria categoria;
+
+    public Producto(String nombre, String descripcion, double precio, int disponibilidad, Ciudad ciudad, Integer descuento, Date fechaLimite){
+
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.disponibilidad = disponibilidad;
+        this.ubicacion = ciudad;
+        this.descuento = descuento;
+        this.fechaLimite = fechaLimite;
+
+
+    }
 }

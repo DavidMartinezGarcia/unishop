@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Comentario {
+public class Comentario implements Serializable {
 
     @Id
     @Column(nullable = false)
@@ -38,4 +39,13 @@ public class Comentario {
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDate fecha;
+
+    public Comentario(Producto producto, Usuario usuario,String comentario, Integer puntuacion, LocalDate fecha) {
+
+        this.producto = producto;
+        this.usuario = usuario;
+        this.comentario = comentario;
+        this.puntuacion = puntuacion;
+        this.fecha = fecha;
+    }
 }

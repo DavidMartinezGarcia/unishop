@@ -3,6 +3,7 @@ package co.edu.uniquindio.unishop.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Chat {
+public class Chat implements Serializable {
 
     @Id
     @Column(nullable = false)
@@ -25,5 +26,6 @@ public class Chat {
     @OneToMany(mappedBy = "chat")
     @ToString.Exclude
     private List<Mensaje> mensajes;
+
 
 }

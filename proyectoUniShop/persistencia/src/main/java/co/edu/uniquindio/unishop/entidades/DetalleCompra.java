@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class DetalleCompra {
+public class DetalleCompra implements Serializable {
 
     @Id
     @Column(nullable = false)
@@ -29,4 +30,10 @@ public class DetalleCompra {
     @Positive
     @Column(nullable = false)
     private Integer cantidad;
+
+    public DetalleCompra(Producto producto, Compra compra, Integer cantidad) {
+        this.producto = producto;
+        this.compra = compra;
+        this.cantidad = cantidad;
+    }
 }

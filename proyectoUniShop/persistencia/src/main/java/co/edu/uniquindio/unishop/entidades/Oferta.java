@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -11,7 +12,7 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Oferta {
+public class Oferta implements Serializable {
 
     @Id
     @Column(nullable = false)
@@ -28,4 +29,8 @@ public class Oferta {
     @Positive
     @Column(nullable = false)
     private double valor;
+
+    public Oferta(double valor){
+        this.valor = valor;
+    }
 }
