@@ -3,7 +3,9 @@ package co.edu.uniquindio.unishop.test;
 import co.edu.uniquindio.unishop.entidades.Ciudad;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Subasta;
+import co.edu.uniquindio.unishop.entidades.Usuario;
 import co.edu.uniquindio.unishop.repositorios.SubastaRepo;
+import co.edu.uniquindio.unishop.repositorios.UsuarioRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +22,19 @@ public class SubastaTest {
 
     @Autowired
     private SubastaRepo subastaRepo;
+    @Autowired
+    private UsuarioRepo usuarioRepo;
 
     /**
      * En este método se crea una subasta, con el fin de realizar una prueba unitaria
      */
     @Test
     @Sql("classpath:subastaPrueba.sql")
+    @Sql("classpath:usuarioPrueba.sql")
     public void registrarTest(){
         Date fechaLimite = new Date(2022, 5, 15);
-        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, Ciudad.BELLO, 0, fechaLimite);
+        Usuario vendedor = usuarioRepo.findById(1).orElse(null);
+        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, Ciudad.BELLO, 0, fechaLimite, vendedor);
         Subasta subasta = new Subasta(producto, 2);
         subastaRepo.save(subasta);
         Assertions.assertNotNull(subastaRepo.findById(1));

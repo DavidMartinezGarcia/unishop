@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,9 @@ public class Usuario implements Serializable {
     @ManyToMany(mappedBy = "listaUsuarios")
     private List<Producto> listaFavoritos;
 
+    @OneToMany(mappedBy = "vendedor")
+    private List<Producto> productos;
+
     public Usuario(Ciudad ciudad, String nombre, String email, List<String> telefono, String contrasenia, TipoUsuario tipoUsuario) {
 
         this.ciudad = ciudad;
@@ -69,5 +73,7 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
         this.contrasenia = contrasenia;
         this.tipoUsuario = tipoUsuario;
+        this.listaFavoritos = new ArrayList<Producto>();
+
     }
 }

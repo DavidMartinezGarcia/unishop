@@ -50,6 +50,9 @@ public class Producto implements Serializable {
     @JoinColumn(nullable = false)
     private Ciudad ubicacion;
 
+    @ManyToOne
+    private Usuario vendedor;
+
     @ToString.Exclude
     @OneToMany(mappedBy = "producto")
     private List<Comentario> comentarios;
@@ -71,7 +74,7 @@ public class Producto implements Serializable {
     @ToString.Exclude
     private Categoria categoria;
 
-    public Producto(String nombre, String descripcion, double precio, int disponibilidad, Ciudad ciudad, Integer descuento, Date fechaLimite){
+    public Producto(String nombre, String descripcion, double precio, int disponibilidad, Ciudad ciudad, Integer descuento, Date fechaLimite, Usuario vendedor){
 
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -80,7 +83,7 @@ public class Producto implements Serializable {
         this.ubicacion = ciudad;
         this.descuento = descuento;
         this.fechaLimite = fechaLimite;
-
+        this.vendedor = vendedor;
 
     }
 }

@@ -30,10 +30,10 @@ public class ComentarioTest {
         List<String> telefonos = new ArrayList<>();
         telefonos.add("2294194");
         telefonos.add("3175682908");
-        Usuario usuario = new Usuario(Ciudad.ROLDANILLO, "Santiago", "shantilolMaster@", telefonos, "sapoperro", TipoUsuario.CLIENTE);
+        Usuario usuario = new Usuario(Ciudad.ROLDANILLO, "Santiago", "shantilolMaster@", telefonos, "contra123", TipoUsuario.CLIENTE);
 
         Date fecha = new Date(2030, 12,12);
-        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000, 20, Ciudad.ROLDANILLO, 0, fecha);
+        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000, 20, Ciudad.ROLDANILLO, 0, fecha, usuario);
         Comentario comentario = new Comentario(producto, usuario, "Esta bonito",5, LocalDate.now());
 
         comentarioRepo.save(comentario);

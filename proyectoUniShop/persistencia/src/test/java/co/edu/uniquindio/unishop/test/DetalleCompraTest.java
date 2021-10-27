@@ -2,6 +2,7 @@ package co.edu.uniquindio.unishop.test;
 
 import co.edu.uniquindio.unishop.entidades.*;
 import co.edu.uniquindio.unishop.repositorios.DetalleCompraRepo;
+import co.edu.uniquindio.unishop.repositorios.UsuarioRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,18 @@ public class DetalleCompraTest {
 
     @Autowired
     private DetalleCompraRepo detalleRepo;
+    @Autowired
+    private UsuarioRepo usuarioRepo;
 
     /**
      * En este método se crea un chat, con el fin de realizar una prueba unitaria
      */
     @Test
+    @Sql("classpath:usuarioPrueba.sql")
     public void registrarTest(){
         Date fechaLimite = new Date(2022, 5, 15);
-        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, Ciudad.BELLO, 0, fechaLimite);
+        Usuario vendedor = usuarioRepo.findById(1).orElse(null);
+        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, Ciudad.BELLO, 0, fechaLimite, vendedor);
         Compra compra = new Compra(MetodoPago.NEQUI, LocalDate.now());
         DetalleCompra detalleCompra = new DetalleCompra(producto, compra, 2);
         detalleRepo.save(detalleCompra);

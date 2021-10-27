@@ -1,9 +1,11 @@
 package co.edu.uniquindio.unishop.repositorios;
 
+import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +27,8 @@ public interface UsuarioRepo extends JpaRepository<Usuario, Integer> {
     Optional<Usuario> findByEmailAndContrasenia(String email, String contrasenia);
 
     Page<Usuario> findAll(Pageable paginador);
+
+    //La lista del IN siempre va entre parentesis y el IN y JOIN solo funcionan cunado quiero relacionar un objeto con una lista
+    @Query("select p from Usuario u, IN (u.listaFavoritos) p where u.email = :email")
+    List<Producto> obtenerProductoFavoritos(String email);
 }
