@@ -1,3 +1,3 @@
-insert into producto_lista_usuarios values (1, 2);
-insert into producto_lista_usuarios values (3, 2);
-insert into producto_lista_usuarios values (2, 1);
+insert into usuario_lista_favoritos values (1, 1);
+insert into usuario_lista_favoritos values (1, 2);
+insert into usuario_lista_favoritos values (1, 3);

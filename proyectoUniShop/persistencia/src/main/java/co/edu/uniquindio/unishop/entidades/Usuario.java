@@ -59,7 +59,7 @@ public class Usuario implements Serializable {
     @ToString.Exclude
     private List<Oferta> listaPujas;
 
-    @ManyToMany(mappedBy = "listaUsuarios")
+    @ManyToMany
     private List<Producto> listaFavoritos;
 
     @OneToMany(mappedBy = "vendedor")

@@ -20,7 +20,7 @@
     <name>Proyecto de programacion avanzada</name>
     <version>1.0-SNAPSHOT</version>
     <description>Este proyecto contiene los modulos de la aplicacion del proyecto final de programacion avanzada</description>
-    <developers>Juan Camilo Tamayo, Diego Armando Perea, Esteban Pelaez Villamil y David Alberto Martinez Garcia</developers>
+
 
     <properties>
         <java.version>11</java.version>

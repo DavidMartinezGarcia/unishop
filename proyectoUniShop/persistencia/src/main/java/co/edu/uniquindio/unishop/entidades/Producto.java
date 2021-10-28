@@ -67,9 +67,9 @@ public class Producto implements Serializable {
     @OneToOne
     private Subasta subasta;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "listaFavoritos")
+    @ToString.Exclude
     private List<Usuario> listaUsuarios;
-
 
     @ToString.Exclude
     private Categoria categoria;

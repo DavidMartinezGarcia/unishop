@@ -1,8 +1,10 @@
 package co.edu.uniquindio.unishop.test;
 
 import co.edu.uniquindio.unishop.entidades.Ciudad;
+import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.TipoUsuario;
 import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.repositorios.ProductoRepo;
 import co.edu.uniquindio.unishop.repositorios.UsuarioRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,8 @@ public class UsuarioTest {
 
     @Autowired
     private UsuarioRepo usuarioRepo;
-
+    @Autowired
+    private ProductoRepo productoRepo;
     /**
      * En este método se crea un usuario, con el fin de realizar una prueba unitaria
      */
@@ -101,5 +104,15 @@ public class UsuarioTest {
     public void ordenarListaTest(){
         List<Usuario> lista = usuarioRepo.findAll(Sort.by("nombre"));
         System.out.println(lista);
+    }
+
+    @Test
+    @Sql("classpath:usuarioPrueba.sql")
+    @Sql("classpath:productosPrueba.sql")
+    @Sql("classpath:favoritosPrueba.sql")
+    public void obtenerFavoritosUsuario(){
+        List<Producto> favoritos = usuarioRepo.obtenerProductoFavoritos("pablochoa25@gmail.com");
+        favoritos.forEach(System.out::println);
+        Assertions.assertEquals(3,favoritos.size());
     }
 }
