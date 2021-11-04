@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Getter
@@ -22,8 +21,7 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @ManyToOne
     private Ciudad ciudad;
 
     @OneToMany(mappedBy = "usuario")
@@ -42,7 +40,7 @@ public class Usuario implements Serializable {
 
     @ElementCollection
     @Column(nullable = false)
-    private List<String> telefono;
+    private List<String> telefonos;
 
     @OneToMany(mappedBy = "usuario")
     @ToString.Exclude
@@ -51,8 +49,8 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private String contrasenia;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+
+    @ManyToOne
     private TipoUsuario tipoUsuario;
 
     @OneToMany(mappedBy = "usuario")
@@ -60,20 +58,20 @@ public class Usuario implements Serializable {
     private List<Oferta> listaPujas;
 
     @ManyToMany
+    @ToString.Exclude
     private List<Producto> listaFavoritos;
 
     @OneToMany(mappedBy = "vendedor")
+    @ToString.Exclude
     private List<Producto> productos;
 
-    public Usuario(Ciudad ciudad, String nombre, String email, List<String> telefono, String contrasenia, TipoUsuario tipoUsuario) {
+    public Usuario(Ciudad ciudad, String nombre, String email, List<String> telefonos, String contrasenia, TipoUsuario tipoUsuario) {
 
         this.ciudad = ciudad;
         this.nombre = nombre;
         this.email = email;
-        this.telefono = telefono;
+        this.telefonos = telefonos;
         this.contrasenia = contrasenia;
         this.tipoUsuario = tipoUsuario;
-        this.listaFavoritos = new ArrayList<Producto>();
-
     }
 }

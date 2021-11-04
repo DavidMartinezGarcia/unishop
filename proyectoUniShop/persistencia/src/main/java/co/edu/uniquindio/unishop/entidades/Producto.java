@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -36,25 +35,24 @@ public class Producto implements Serializable {
 
     @Positive
     @Column(nullable = false)
-    private double precio;
+    private Double precio;
 
     @Positive
     @Column(nullable = false)
-    private int disponibilidad;
+    private Integer disponibilidad;
 
     @Future
     @Column(nullable = false)
     private Date fechaLimite;
 
-    @Enumerated(EnumType.STRING)
-    @JoinColumn(nullable = false)
+    @ManyToOne
     private Ciudad ubicacion;
 
     @ManyToOne
     private Usuario vendedor;
 
-    @ToString.Exclude
     @OneToMany(mappedBy = "producto")
+    @ToString.Exclude
     private List<Comentario> comentarios;
 
     @Column(nullable = false)
@@ -71,10 +69,11 @@ public class Producto implements Serializable {
     @ToString.Exclude
     private List<Usuario> listaUsuarios;
 
+    @ManyToMany(mappedBy = "listaProductos")
     @ToString.Exclude
-    private Categoria categoria;
+    private List<Categoria> listaCategorias;
 
-    public Producto(String nombre, String descripcion, double precio, int disponibilidad, Ciudad ciudad, Integer descuento, Date fechaLimite, Usuario vendedor){
+    public Producto(String nombre, String descripcion, Double precio, Integer disponibilidad, Ciudad ciudad, Integer descuento, Date fechaLimite, Usuario vendedor){
 
         this.nombre = nombre;
         this.descripcion = descripcion;

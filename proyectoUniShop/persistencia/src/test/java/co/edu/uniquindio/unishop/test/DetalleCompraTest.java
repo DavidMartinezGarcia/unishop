@@ -1,6 +1,7 @@
 package co.edu.uniquindio.unishop.test;
 
 import co.edu.uniquindio.unishop.entidades.*;
+import co.edu.uniquindio.unishop.repositorios.CiudadRepo;
 import co.edu.uniquindio.unishop.repositorios.DetalleCompraRepo;
 import co.edu.uniquindio.unishop.repositorios.UsuarioRepo;
 import org.junit.jupiter.api.Assertions;
@@ -21,19 +22,26 @@ public class DetalleCompraTest {
     private DetalleCompraRepo detalleRepo;
     @Autowired
     private UsuarioRepo usuarioRepo;
+    @Autowired
+    private CiudadRepo ciudadRepo;
 
     /**
      * En este método se crea un chat, con el fin de realizar una prueba unitaria
      */
     @Test
+    @Sql("classpath:ciudadPrueba.sql")
     @Sql("classpath:usuarioPrueba.sql")
     public void registrarTest(){
+
         Date fechaLimite = new Date(2022, 5, 15);
+
+        Ciudad ciudad = ciudadRepo.findById(1).orElse(null);
+
         Usuario vendedor = usuarioRepo.findById(1).orElse(null);
-        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, Ciudad.BELLO, 0, fechaLimite, vendedor);
+        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, ciudad, 0, fechaLimite, vendedor);
         Compra compra = new Compra(MetodoPago.NEQUI, LocalDate.now());
         DetalleCompra detalleCompra = new DetalleCompra(producto, compra, 2);
-        detalleRepo.save(detalleCompra);
+          detalleRepo.save(detalleCompra);
         Assertions.assertNotNull(detalleRepo.findById(4).orElse(null));
     }
 
@@ -44,6 +52,7 @@ public class DetalleCompraTest {
     @Test
     @Sql("classpath:detalleCompraPrueba.sql")
     public void actualizarTest(){
+
         DetalleCompra detalleGuardado = detalleRepo.findById(1).orElse(null);
         detalleGuardado.setCantidad(10);
         detalleRepo.save(detalleGuardado);
@@ -58,6 +67,7 @@ public class DetalleCompraTest {
     @Test
     @Sql("classpath:detalleCompraPrueba.sql")
     public void eliminarTest(){
+
         detalleRepo.deleteById(1);
         DetalleCompra detalleBuscado = detalleRepo.findById(1).orElse(null);
         Assertions.assertNull(detalleBuscado);

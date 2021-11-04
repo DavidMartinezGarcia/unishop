@@ -26,6 +26,4 @@ public class Chat implements Serializable {
     @OneToMany(mappedBy = "chat")
     @ToString.Exclude
     private List<Mensaje> mensajes;
-
-
 }

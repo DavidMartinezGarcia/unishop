@@ -1,10 +1,12 @@
 package co.edu.uniquindio.unishop.test;
 
-import co.edu.uniquindio.unishop.entidades.Ciudad;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.TipoUsuario;
 import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.entidades.Ciudad;
+import co.edu.uniquindio.unishop.repositorios.CiudadRepo;
 import co.edu.uniquindio.unishop.repositorios.ProductoRepo;
+import co.edu.uniquindio.unishop.repositorios.TipoUsuarioRepo;
 import co.edu.uniquindio.unishop.repositorios.UsuarioRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,8 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,16 +31,26 @@ public class UsuarioTest {
     private UsuarioRepo usuarioRepo;
     @Autowired
     private ProductoRepo productoRepo;
+    @Autowired
+    private CiudadRepo ciudadRepo;
+    @Autowired
+    private TipoUsuarioRepo tipoUsuarioRepo;
     /**
      * En este método se crea un usuario, con el fin de realizar una prueba unitaria
      */
     @Test
+    @Sql("classpath:ciudadPrueba.sql")
+    @Sql("classpath:tipoUsuarioPrueba.sql")
     @Sql("classpath:usuarioPrueba.sql")
     public void registrarTest() {
         List<String> telefonos = new ArrayList<>();
+
+        Ciudad ciudad = ciudadRepo.findById(1).orElse(null);
+        TipoUsuario tipo = tipoUsuarioRepo.findById(2).orElse(null);
+
         telefonos.add("2294194");
         telefonos.add("3175682908");
-        Usuario usuario = new Usuario(Ciudad.BARRANCAMERMEJA, "Pedro Morales", "pedrom@gmail.com", telefonos, "pm2574-*", TipoUsuario.CLIENTE);
+        Usuario usuario = new Usuario(ciudad, "Pedro Morales", "pedrom@gmail.com", telefonos, "pm2574-*", tipo);
         usuarioRepo.save(usuario);
         Assertions.assertNotNull(usuarioRepo.findById(1));
     }
@@ -108,7 +118,7 @@ public class UsuarioTest {
 
     @Test
     @Sql("classpath:usuarioPrueba.sql")
-    @Sql("classpath:productosPrueba.sql")
+    @Sql("classpath:productoPrueba.sql")
     @Sql("classpath:favoritosPrueba.sql")
     public void obtenerFavoritosUsuario(){
         List<Producto> favoritos = usuarioRepo.obtenerProductoFavoritos("pablochoa25@gmail.com");

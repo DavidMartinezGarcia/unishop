@@ -14,15 +14,15 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepo extends JpaRepository<Usuario, Integer> {
 
-    // @Query("select u from Usuario u where u.nombre = :nombre")
-    // List<Usuario> obtenerUsuariosPorNombre(String nombre);
+    @Query("select u from Usuario u where u.nombre = :nombre")
+    List<Usuario> obtenerUsuariosPorNombre(String nombre);
 
     List<Usuario> findAllByNombreContains(String nombre);
 
     Optional<Usuario> findByEmail(String email);
 
-    //@Query("select u from Usuario u where u.email = :email and u.contrasenia = :contrasenia")
-    //Optional<Usuario> verificarAutenticacion(String email, String contrasenia);
+    @Query("select u from Usuario u where u.email = :email and u.contrasenia = :contrasenia")
+    Optional<Usuario> verificarAutenticacion(String email, String contrasenia);
 
     Optional<Usuario> findByEmailAndContrasenia(String email, String contrasenia);
 

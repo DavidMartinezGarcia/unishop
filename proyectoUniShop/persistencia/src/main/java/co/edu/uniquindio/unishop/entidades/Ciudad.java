@@ -1,66 +1,36 @@
 package co.edu.uniquindio.unishop.entidades;
 
-public enum Ciudad {
-    BOGOTA,
-    MEDELLIN,
-    CALI,
-    BARRANQUILLA,
-    CARTAGENA,
-    CUCUTA,
-    SOLEDAD,
-    IBAGUE,
-    BUCARAMANGA,
-    SANTA_MARTA,
-    VILLAVICENCIO,
-    SOACHA,
-    PEREIRA,
-    BELLO,
-    VALLEDUPAR,
-    MONTERIA,
-    PASTO,
-    MANIZALES,
-    BUENAVENTURA,
-    NEIVA,
-    BARRANCAMERMEJA,
-    PALMIRA,
-    ARMENIA,
-    POPAYAN,
-    SINCELEJO,
-    ITAGUI,
-    FLORIDABLANCA,
-    RIOHACHA,
-    ENVIGADO,
-    TULUA,
-    DOSQUBRADAS,
-    TUNJA,
-    GIRON,
-    APARTADO,
-    FLORENCIA,
-    URIBIA,
-    IPIALES,
-    TURBO,
-    MAICAO,
-    YOPAL,
-    FUSAGASUGA,
-    CARTAGO,
-    FACATATIVA,
-    CHIA,
-    MAGANGUE,
-    PITALITO,
-    ROLDANILLO,
-    CAUCASIA,
-    ZIPAQUIRA,
-    MALAMBO,
-    RIONEGRO,
-    LORICA,
-    JAMUNDI,
-    QUIBDO,
-    BUGA,
-    YUMBO,
-    SOGAMOSO,
-    DUITAMA,
-    GIRARDOT,
-    CIENAGA,
-    OTRO
+import lombok.*;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Ciudad {
+
+    @Id
+    @Column(nullable = false)
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer codigoCiudad;
+
+    @Column(nullable = false)
+    private String nombre;
+
+    @OneToMany(mappedBy = "ciudad")
+    @ToString.Exclude
+    private List<Usuario> usuarios;
+
+    @OneToMany(mappedBy = "ubicacion")
+    @ToString.Exclude
+    private List<Producto> productos;
+
+    public Ciudad(String nombre) {
+        this.nombre = nombre;
+    }
 }

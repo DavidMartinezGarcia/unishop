@@ -1,7 +1,9 @@
 package co.edu.uniquindio.unishop.test;
 
 import co.edu.uniquindio.unishop.entidades.*;
+import co.edu.uniquindio.unishop.repositorios.CiudadRepo;
 import co.edu.uniquindio.unishop.repositorios.ComentarioRepo;
+import co.edu.uniquindio.unishop.repositorios.TipoUsuarioRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +23,30 @@ public class ComentarioTest {
     @Autowired
     private ComentarioRepo comentarioRepo;
 
+    @Autowired
+    private CiudadRepo ciudadRepo;
+
+    @Autowired
+    private TipoUsuarioRepo tipoUsuarioRepo;
+
     /**
      * En este método se crea un comentario, con el fin de realizar una prueba unitaria
      */
+
     @Test
+    @Sql("classpath:ciudadPrueba.sql")
+    @Sql("classpath:tipoUsuarioPrueba.sql")
     public void registrarTest(){
 
         List<String> telefonos = new ArrayList<>();
+        Ciudad ciudad = ciudadRepo.getById(1);
+        TipoUsuario tipoUsuario = tipoUsuarioRepo.getById(1);
         telefonos.add("2294194");
         telefonos.add("3175682908");
-        Usuario usuario = new Usuario(Ciudad.ROLDANILLO, "Santiago", "shantilolMaster@", telefonos, "contra123", TipoUsuario.CLIENTE);
 
         Date fecha = new Date(2030, 12,12);
-        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000, 20, Ciudad.ROLDANILLO, 0, fecha, usuario);
+        Usuario usuario = new Usuario(ciudad, "Santiago perez", "sp05@gamiil.com", telefonos, "sp12345", tipoUsuario);
+        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000.0, 20, ciudad, 0, fecha, usuario);
         Comentario comentario = new Comentario(producto, usuario, "Esta bonito",5, LocalDate.now());
 
         comentarioRepo.save(comentario);

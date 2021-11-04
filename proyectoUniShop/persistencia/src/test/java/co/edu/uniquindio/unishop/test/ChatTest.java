@@ -5,6 +5,8 @@ import co.edu.uniquindio.unishop.entidades.Ciudad;
 import co.edu.uniquindio.unishop.entidades.TipoUsuario;
 import co.edu.uniquindio.unishop.entidades.Usuario;
 import co.edu.uniquindio.unishop.repositorios.ChatRepo;
+import co.edu.uniquindio.unishop.repositorios.CiudadRepo;
+import co.edu.uniquindio.unishop.repositorios.TipoUsuarioRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,10 @@ public class ChatTest {
 
     @Autowired
     private ChatRepo chatRepo;
+    @Autowired
+    private CiudadRepo ciudadRepo;
+    @Autowired
+    private TipoUsuarioRepo tipoUsuarioRepo;
 
     /**
      * En este método se crea un chat, con el fin de realizar una prueba unitaria
@@ -51,11 +57,16 @@ public class ChatTest {
      * de realizar una prueba unitaria
      */
     @Test
+    @Sql("classpath:ciudadPrueba.sql")
+    @Sql("classpath:tipoUsuarioPrueba.sql")
     @Sql("classpath:chatPrueba.sql")
     public void actualizarTest(){
 
+        Ciudad ciudadGuardado = ciudadRepo.findById(2).orElse(null);
         Chat chatGuardado = chatRepo.findById(1).orElse(null);
-        chatGuardado.setUsuario(new Usuario(Ciudad.ROLDANILLO, "Diego Armando", "@gmail", null, "1234", TipoUsuario.CLIENTE ));
+        TipoUsuario tipo = tipoUsuarioRepo.findById(1).orElse(null);
+
+        chatGuardado.setUsuario(new Usuario(ciudadGuardado, "Diego Armando", "@gmail", null, "1234", tipo ));
         chatRepo.save(chatGuardado);
 
         Chat chatBuscado = chatRepo.findById(1).orElse(null);
