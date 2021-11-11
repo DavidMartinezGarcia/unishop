@@ -1,8 +1,10 @@
 package co.edu.uniquindio.unishop.entidades;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,7 @@ import java.util.List;
 public class Usuario implements Serializable {
 
     @Id
-    @Column(nullable = false)
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
     @ManyToOne
@@ -33,9 +33,12 @@ public class Usuario implements Serializable {
     private List<Comentario> comentarios;
 
     @Column(nullable = false, length = 80)
+    @Length(max = 80)
     private String nombre;
 
     @Column(nullable = false, unique = true, length = 120)
+    @Length(max = 120)
+    @Email
     private String email;
 
     @ElementCollection
@@ -46,7 +49,8 @@ public class Usuario implements Serializable {
     @ToString.Exclude
     private List<Chat> chats;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 80)
+    @Length(max = 80,min = 6)
     private String contrasenia;
 
 
@@ -67,6 +71,16 @@ public class Usuario implements Serializable {
 
     public Usuario(Ciudad ciudad, String nombre, String email, List<String> telefonos, String contrasenia, TipoUsuario tipoUsuario) {
 
+        this.ciudad = ciudad;
+        this.nombre = nombre;
+        this.email = email;
+        this.telefonos = telefonos;
+        this.contrasenia = contrasenia;
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    public Usuario(Integer codigo,Ciudad ciudad, String nombre, String email, List<String> telefonos, String contrasenia, TipoUsuario tipoUsuario) {
+        this.codigo = codigo;
         this.ciudad = ciudad;
         this.nombre = nombre;
         this.email = email;

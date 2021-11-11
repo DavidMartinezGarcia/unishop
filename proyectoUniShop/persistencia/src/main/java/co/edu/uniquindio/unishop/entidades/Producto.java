@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -37,9 +38,9 @@ public class Producto implements Serializable {
     @Column(nullable = false)
     private Double precio;
 
-    @Positive
+    @PositiveOrZero
     @Column(nullable = false)
-    private Integer disponibilidad;
+    private Integer unidadesDisponibles;
 
     @Future
     @Column(nullable = false)
@@ -73,12 +74,12 @@ public class Producto implements Serializable {
     @ToString.Exclude
     private List<Categoria> listaCategorias;
 
-    public Producto(String nombre, String descripcion, Double precio, Integer disponibilidad, Ciudad ciudad, Integer descuento, Date fechaLimite, Usuario vendedor){
+    public Producto(String nombre, String descripcion, Double precio, Integer unidadesDisponibles, Ciudad ciudad, Integer descuento, Date fechaLimite, Usuario vendedor){
 
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
-        this.disponibilidad = disponibilidad;
+        this.unidadesDisponibles = unidadesDisponibles;
         this.ubicacion = ciudad;
         this.descuento = descuento;
         this.fechaLimite = fechaLimite;
