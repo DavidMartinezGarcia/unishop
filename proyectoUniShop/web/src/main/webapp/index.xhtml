@@ -13,5 +13,11 @@
 </h:head>
 <h:body>
     <h1>#{inicioBean.mensaje}</h1>
+
+    <h:form>
+        <h:inputText id="login" value="#{usuarioBean.login}"/>
+        <h:commandButton value="Enviar" action="mostrar"/>
+    </h:form>
+
 </h:body>
 </html>

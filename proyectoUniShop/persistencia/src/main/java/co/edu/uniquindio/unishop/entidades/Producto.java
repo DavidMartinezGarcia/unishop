@@ -3,9 +3,7 @@ package co.edu.uniquindio.unishop.entidades;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +29,7 @@ public class Producto implements Serializable {
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String descripcion;
 
     @Positive
@@ -57,6 +55,8 @@ public class Producto implements Serializable {
     private List<Comentario> comentarios;
 
     @Column(nullable = false)
+    @Min(0)
+    @Max(100)
     private Integer descuento;
 
     @OneToMany(mappedBy = "compra")

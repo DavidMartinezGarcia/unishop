@@ -38,7 +38,7 @@ public class Usuario implements Serializable {
 
     @Column(nullable = false, unique = true, length = 120)
     @Length(max = 120)
-    @Email
+    @Email(message = "Por favor ingrese un email válido.")
     private String email;
 
     @ElementCollection
@@ -50,7 +50,7 @@ public class Usuario implements Serializable {
     private List<Chat> chats;
 
     @Column(nullable = false, length = 80)
-    @Length(max = 80,min = 6)
+    @Length(max = 80,min = 6, message = "Longitud no válida para la contraseña")
     private String contrasenia;
 
 

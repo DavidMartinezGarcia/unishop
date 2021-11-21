@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Crear producto</title>
+</h:head>
+<h:body>
+    <p:panel header="Crear producto">
+        <h:form>
+            <h:panelGrid columns="2" cellpadding="9">
+
+                <p:outputLabel value="Nombre: " for="nombre_p"/>
+                <p:inputText id="nombre_p" value="#{productoBean.producto.nombre}" required="true" size="30"/>
+
+                <p:outputLabel value="Precio: " for="precio_p"/>
+                <p:inputText id="precio_p" value="#{productoBean.producto.precio}" required="true" size="30"/>
+
+                <p:outputLabel value="Descuento: " for="descuento_p"/>
+                <p:inputText id="descuento_p" value="#{productoBean.producto.descuento}" required="true" size="30"/>
+
+                <p:outputLabel value="Disponibilidad: " for="disponibilidad_p"/>
+                <p:inputText id ="disponibilidad_p" value="#{productoBean.producto.unidadesDisponibles}" required="true" size="30"/>
+
+                <p:outputLabel for="fechaLimite_p" value="Fecha Limite: "/>
+                <p:datePicker id="fechaLimite_p" value="#{productoBean.producto.fechaLimite}" showButtonBar="true" required="true" size="30"/>
+
+                <p:outputLabel for="descripcion_p" value="Descripcion: "/>
+                <p:inputTextarea id="descripcion_p" value="#{productoBean.producto.descripcion}" required="true" rows="6" cols="32"/>
+
+            </h:panelGrid>
+
+            <p:growl showDetail="true" />
+            <p:commandButton value="Crear producto" action="#{productoBean.crearProducto}" update="@form" icon="pi pi-plus" />
+        </h:form>
+    </p:panel>
+
+</h:body>
+</html>
