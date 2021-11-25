@@ -10,14 +10,47 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Mi primera página</title>
+    <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+    <h:outputStylesheet library="css" name="boxicons.min.css"/>
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'/>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <h:outputScript library="js" name="bootstrap.bundle.min.js"/>
 </h:head>
 <h:body>
-    <h1>#{inicioBean.mensaje}</h1>
+    <div id="header">
+        <header class="py-3 mb-0 border-bottom">
+            <div id="header-container" class="container">
+                <a id="title-container" href="" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+                    <i class='bx bxs-cube-alt'/>
+                    <span class="fs-4">UniShop</span>
+                </a>
+                <h:form class="col-12 col-lg-auto mb-3 mb-lg-0" id="search-bar">
+                    <div class="input-group mb-3">
+                        <p:inputText style="width: 500px" type="text" class="form-control" placeholder="¿Qué producto está buscando?" value="#{busquedaBean.busqueda}" />
+                        <p:commandButton icon="pi pi-search" class="btn btn-outline-secondary" action="#{busquedaBean.buscar}" update="@form"/>
+                    </div>
+                </h:form>
+            </div>
+        </header>
+        <nav class="py-2 bg-light border-bottom">
+            <div class="container d-flex flex-wrap">
+                <ul class="nav me-auto">
+                    <li class="nav-item"><a href="index.xhtml" class="nav-link link-dark px-2">Inicio</a></li>
+                    <li class="nav-item"><a href="registrar_usuario.xhtml" class="nav-link link-dark px-2">Registrar Usuario</a></li>
+                    <li class="nav-item"> <a href="crear_producto.xhtml" class="nav-link link-dark px-2">Crear Producto</a> </li>
 
-    <h:form>
-        <h:inputText id="login" value="#{usuarioBean.login}"/>
-        <h:commandButton value="Enviar" action="mostrar"/>
-    </h:form>
+                </ul>
+                <div class="text-end">
+                    <h:form action="">
+                        <h:commandButton styleClass="btn btn-primary me-1" value="Ingresa"/>
+                        <h:commandButton styleClass="btn btn-primary"  value="Registrate" action="registrar_usuario?faces-redirect=true" />
+                    </h:form>
+                </div>
+
+            </div>
+        </nav>
+    </div>
+
 
 </h:body>
 </html>
