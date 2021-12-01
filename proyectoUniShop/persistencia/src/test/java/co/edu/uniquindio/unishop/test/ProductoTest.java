@@ -1,8 +1,10 @@
 package co.edu.uniquindio.unishop.test;
 
+import co.edu.uniquindio.unishop.entidades.Categoria;
 import co.edu.uniquindio.unishop.entidades.Ciudad;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.repositorios.CategoriaRepo;
 import co.edu.uniquindio.unishop.repositorios.CiudadRepo;
 import co.edu.uniquindio.unishop.repositorios.ProductoRepo;
 import co.edu.uniquindio.unishop.repositorios.UsuarioRepo;
@@ -13,7 +15,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @DataJpaTest
@@ -26,24 +31,42 @@ public class ProductoTest {
     private UsuarioRepo usuarioRepo;
     @Autowired
     private CiudadRepo ciudadRepo;
+    @Autowired
+    private CategoriaRepo categoriaRepo;
 
     /**
      * En este método se crea un producto, con el fin de realizar una prueba unitaria
      */
     @Test
     @Sql("classpath:usuarioPrueba.sql")
-    @Sql("classpath:ciudadarioPrueba.sql")
+    @Sql("classpath:ciudadPrueba.sql")
     public void registrarTest(){
 
         Usuario vendedor = usuarioRepo.findById(1).orElse(null);
-
         Ciudad ciudad = ciudadRepo.findById(2).orElse(null);
 
-        Date fecha = new Date(2030, 12,12);
-        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000.0, 20, ciudad, 0, fecha, vendedor);
+        LocalDate fecha = LocalDate.of(2022, 5 , 15);
+        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000.0, 20, ciudad, 0, fecha, vendedor, null);
         productoRepo.save(producto);
         Assertions.assertNotNull(productoRepo.findById(1));
 
+    }
+    
+    @Test
+    @Sql("classpath:usuarioPrueba.sql")
+    @Sql("classpath:ciudadPrueba.sql")
+    @Sql("classpath:categoriaPrueba.sql")
+    public void verificarCategoriaTest(){
+        Usuario vendedor = usuarioRepo.findById(1).orElse(null);
+        Ciudad ciudad = ciudadRepo.findById(2).orElse(null);
+        Categoria categoria = categoriaRepo.findById(1).orElse(null);
+        List<Categoria>categorias = new ArrayList<Categoria>();
+        categorias.add(categoria);
+        LocalDate fecha = LocalDate.of(2022, 5 , 15);
+        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000.0, 20, ciudad, 0, fecha, vendedor, categorias);
+        productoRepo.save(producto);
+        System.out.println("ProductoTest categoriasProductoRecuperado: "+producto.getListaCategorias());
+        Assertions.assertEquals("Frutas",productoRepo.buscarProductoNombre("Alcachofas").get(0).getListaCategorias().get(0).getNombre());
     }
 
     /**

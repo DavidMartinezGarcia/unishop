@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.repositorios;
 
+import co.edu.uniquindio.unishop.entidades.Categoria;
 import co.edu.uniquindio.unishop.entidades.Comentario;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Usuario;
@@ -40,4 +41,6 @@ public interface ProductoRepo extends JpaRepository<Producto, Integer> {
     @Query("select p from Producto p where p.nombre like concat('%', :nombre, '%') ")
     List<Producto> buscarProductoNombre(String nombre);
 
+    @Query("select p from Producto p where :categoria member of p.listaCategorias")
+    List<Producto> buscarProductosCategoria(Categoria categoria);
 }

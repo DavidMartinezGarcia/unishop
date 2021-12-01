@@ -1,14 +1,15 @@
 package co.edu.uniquindio.unishop.servicios;
 
 
-import co.edu.uniquindio.unishop.entidades.Categoria;
-import co.edu.uniquindio.unishop.entidades.Compra;
-import co.edu.uniquindio.unishop.entidades.Producto;
-import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.entidades.*;
+import co.edu.uniquindio.unishop.repositorios.ComentarioRepo;
+import co.edu.uniquindio.unishop.repositorios.CompraRepo;
 import co.edu.uniquindio.unishop.repositorios.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +19,17 @@ public class ProductoServicioImpl implements ProductoServicio {
     @Autowired
     private ProductoRepo productoRepo;
 
+    @Autowired
+    private ComentarioRepo comentarioRepo;
+
+    private CompraRepo compraRepo;
+
     @Override
     public Producto publicarProducto(Producto p) throws Exception {
         try {
-            return productoRepo.save(p);
+            Producto producto = productoRepo.save(p);
+
+            return producto;
         }catch(Exception e){
             throw new Exception(e.getMessage());
         }
@@ -29,6 +37,7 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     @Override
     public void actualizarProducto(Producto producto) throws Exception {
+
 
     }
 
@@ -47,12 +56,18 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     @Override
     public List<Producto> listarProductos(Categoria categoria) {
-        return null;
+        return productoRepo.buscarProductosCategoria(categoria);
     }
 
     @Override
-    public void comentarProducto(String mensaje, Integer calificacion, Usuario usuario, Producto producto) throws Exception {
+    public List<Producto> listarTodosLosProductos() throws Exception {
+        return productoRepo.findAll();
+    }
 
+    @Override
+    public void comentarProducto(Comentario comentario) throws Exception {
+        comentario.setFecha(LocalDate.now());
+        comentarioRepo.save(comentario);
     }
 
     @Override
@@ -61,8 +76,15 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
     @Override
-    public void comprarProductos(Compra compra) throws Exception {
+    public Compra comprarProductos(Compra compra) throws Exception {
 
+        try {
+            Compra compraU = compraRepo.save(compra);
+
+            return compraU;
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override

@@ -33,12 +33,12 @@ public class DetalleCompraTest {
     @Sql("classpath:usuarioPrueba.sql")
     public void registrarTest(){
 
-        Date fechaLimite = new Date(2022, 5, 15);
+        LocalDate fechaLimite = LocalDate.of(2022, 5 , 15);
 
         Ciudad ciudad = ciudadRepo.findById(1).orElse(null);
 
         Usuario vendedor = usuarioRepo.findById(1).orElse(null);
-        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, ciudad, 0, fechaLimite, vendedor);
+        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, ciudad, 0, fechaLimite, vendedor, null);
         Compra compra = new Compra(MetodoPago.NEQUI, LocalDate.now());
         DetalleCompra detalleCompra = new DetalleCompra(producto, compra, 2);
           detalleRepo.save(detalleCompra);

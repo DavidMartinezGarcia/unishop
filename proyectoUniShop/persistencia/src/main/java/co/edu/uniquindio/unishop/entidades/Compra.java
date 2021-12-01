@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,9 +36,12 @@ public class Compra implements Serializable {
     private MetodoPago metodoDePago;
 
     public Compra(MetodoPago metodoDePago,LocalDate fecha){
-
         this.metodoDePago = metodoDePago;
         this.fecha = fecha;
-
+    }
+    public Compra(MetodoPago metodoDePago,LocalDate fecha, ArrayList<DetalleCompra> detalleCompras) {
+        this.metodoDePago = metodoDePago;
+        this.fecha = fecha;
+        this.detalleCompras = detalleCompras;
     }
 }

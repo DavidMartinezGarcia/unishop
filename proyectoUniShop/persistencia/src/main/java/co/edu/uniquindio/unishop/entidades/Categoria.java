@@ -25,7 +25,7 @@ public class Categoria {
 
 
     @ToString.Exclude
-    @ManyToMany
+    @ManyToMany(mappedBy = "listaCategorias")
     private List<Producto> listaProductos;
 
     public Categoria(String nombre) {

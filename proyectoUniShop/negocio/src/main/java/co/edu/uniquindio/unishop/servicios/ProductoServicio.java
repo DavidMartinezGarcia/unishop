@@ -16,13 +16,17 @@ public interface ProductoServicio {
 
     List<Producto> listarProductos(Categoria categoria);
 
-    void comentarProducto(String mensaje, Integer calificacion, Usuario usuario, Producto producto) throws Exception;
+    List<Producto> listarTodosLosProductos() throws Exception;
+
+    void comentarProducto(Comentario comentario) throws Exception;
 
     void eliminarProductoFavorito(Producto producto, Usuario usuario) throws Exception;
 
-    void comprarProductos(Compra compra) throws Exception;
+    Compra comprarProductos(Compra compra) throws Exception;
 
     List<Producto> buscarProductos(String nombreProducto, String[] filtros);
 
     List<Producto> listarProductos(Integer codigoUsuario) throws Exception;
+
+
 }

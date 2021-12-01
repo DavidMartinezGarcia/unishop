@@ -1,7 +1,11 @@
 package co.edu.uniquindio.unishop.bean;
 
+import co.edu.uniquindio.unishop.entidades.Categoria;
+import co.edu.uniquindio.unishop.entidades.Ciudad;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.servicios.CategoriaServicio;
+import co.edu.uniquindio.unishop.servicios.CiudadServicio;
 import co.edu.uniquindio.unishop.servicios.ProductoServicio;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -21,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @ViewScoped
 @Component
@@ -31,12 +40,27 @@ public class ProductoBean implements Serializable {
     @Getter @Setter
     private ArrayList<String> imagenes;
 
+    @Autowired
+    private CategoriaServicio categoriaServicio;
+
+    @Getter @Setter
+    private List<Categoria> listaCategorias;
+
+    @Autowired
+    private CiudadServicio ciudadServicio;
+
+    @Getter @Setter
+    private List<Ciudad> listaCiudades;
+
     @PostConstruct
     public void inicializar(){
 
         producto = new Producto();
         this.imagenes = new ArrayList<>();
+        listaCategorias = categoriaServicio.listarCategorias();
+        listaCiudades = ciudadServicio.listarCiudades();
     }
+
     @Autowired
     private ProductoServicio productoServicio;
 
@@ -48,6 +72,7 @@ public class ProductoBean implements Serializable {
         try {
             if(!imagenes.isEmpty()) {
                 producto.setImagenes(imagenes);
+                producto.setFechaLimite(LocalDate.now().plusMonths(2));
                 productoServicio.publicarProducto(producto);
                 FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Producto creado con exito");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -83,5 +108,6 @@ public class ProductoBean implements Serializable {
         }
         return null;
     }
+
 
 }

@@ -44,9 +44,10 @@ public class ComentarioTest {
         telefonos.add("2294194");
         telefonos.add("3175682908");
 
-        Date fecha = new Date(2030, 12,12);
+        LocalDate fecha = LocalDate.of(2022, 5 , 15);
+
         Usuario usuario = new Usuario(ciudad, "Santiago perez", "sp05@gamiil.com", telefonos, "sp12345", tipoUsuario);
-        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000.0, 20, ciudad, 0, fecha, usuario);
+        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000.0, 20, ciudad, 0, fecha, usuario, null);
         Comentario comentario = new Comentario(producto, usuario, "Esta bonito",5, LocalDate.now());
 
         comentarioRepo.save(comentario);

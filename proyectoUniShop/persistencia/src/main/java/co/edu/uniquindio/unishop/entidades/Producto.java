@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
-    @ElementCollection
+    @ElementCollection()
     @ToString.Exclude
     private List<String> imagenes;
 
@@ -42,7 +43,7 @@ public class Producto implements Serializable {
 
     @Future
     @Column(nullable = false)
-    private Date fechaLimite;
+    private LocalDate fechaLimite;
 
     @ManyToOne
     private Ciudad ubicacion;
@@ -70,11 +71,11 @@ public class Producto implements Serializable {
     @ToString.Exclude
     private List<Usuario> listaUsuarios;
 
-    @ManyToMany(mappedBy = "listaProductos")
+    @ManyToMany
     @ToString.Exclude
     private List<Categoria> listaCategorias;
 
-    public Producto(String nombre, String descripcion, Double precio, Integer unidadesDisponibles, Ciudad ciudad, Integer descuento, Date fechaLimite, Usuario vendedor){
+    public Producto(String nombre, String descripcion, Double precio, Integer unidadesDisponibles, Ciudad ciudad, Integer descuento, LocalDate fechaLimite, Usuario vendedor, List<Categoria> categorias){
 
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -84,6 +85,27 @@ public class Producto implements Serializable {
         this.descuento = descuento;
         this.fechaLimite = fechaLimite;
         this.vendedor = vendedor;
+        this.listaCategorias = categorias;
 
+    }
+
+   public String getImagenPrincipal(){
+
+        if(imagenes != null && !imagenes.isEmpty()){
+            return imagenes.get(0);
+        }
+        return "default.png";
+
+   }
+
+    public String mostrarCategorias(){
+        String resultado = "";
+        for (int i = 0;i<listaCategorias.size();i++) {
+            resultado += listaCategorias.get(i).getNombre();
+            if(i<listaCategorias.size()-1){
+                resultado+=", ";
+            }
+        }
+        return resultado;
     }
 }

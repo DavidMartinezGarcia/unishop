@@ -41,7 +41,7 @@ public class Usuario implements Serializable {
     @Email(message = "Por favor ingrese un email válido.")
     private String email;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false)
     private List<String> telefonos;
 

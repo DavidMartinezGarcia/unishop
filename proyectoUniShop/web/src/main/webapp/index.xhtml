@@ -6,51 +6,49 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Mi primera página</title>
-    <h:outputStylesheet library="css" name="bootstrap.min.css"/>
-    <h:outputStylesheet library="css" name="boxicons.min.css"/>
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'/>
-    <h:outputStylesheet library="css" name="styles.css"/>
-    <h:outputScript library="js" name="bootstrap.bundle.min.js"/>
-</h:head>
-<h:body>
-    <div id="header">
-        <header class="py-3 mb-0 border-bottom">
-            <div id="header-container" class="container">
-                <a id="title-container" href="" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-                    <i class='bx bxs-cube-alt'/>
-                    <span class="fs-4">UniShop</span>
-                </a>
-                <h:form class="col-12 col-lg-auto mb-3 mb-lg-0" id="search-bar">
-                    <div class="input-group mb-3">
-                        <p:inputText style="width: 500px" type="text" class="form-control" placeholder="¿Qué producto está buscando?" value="#{busquedaBean.busqueda}" />
-                        <p:commandButton icon="pi pi-search" class="btn btn-outline-secondary" action="#{busquedaBean.buscar}" update="@form"/>
+<ui:composition template="WEB-INF/template.xhtml">
+    <ui:define name="title">UniShop</ui:define>
+    <ui:define name="content">
+        <h1>Lista productos</h1>
+        <h:form>
+            <p:dataView value="#{inicioBean.productos}" paginator="true" rows="8" var="producto" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+                <p:dataViewGridItem>
+                    <p> # - #{producto.nombre}</p>
+                    <div class="card" >
+                        <img src="/uploads/#{producto.imagenPrincipal}" class="card-img-top" alt="..." />
+                        <div class="card-body">
+                            <h5 class="card-title">#{producto.nombre}</h5>
+                            <p class="card-text">#{producto.precio}</p>
+                            <hr />
+                            <p:commandButton value="Ver detalle" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" action="#{inicioBean.irADetalle(producto.codigo)}" />
+                        </div>
                     </div>
-                </h:form>
-            </div>
-        </header>
-        <nav class="py-2 bg-light border-bottom">
-            <div class="container d-flex flex-wrap">
-                <ul class="nav me-auto">
-                    <li class="nav-item"><a href="index.xhtml" class="nav-link link-dark px-2">Inicio</a></li>
-                    <li class="nav-item"><a href="registrar_usuario.xhtml" class="nav-link link-dark px-2">Registrar Usuario</a></li>
-                    <li class="nav-item"> <a href="crear_producto.xhtml" class="nav-link link-dark px-2">Crear Producto</a> </li>
+                </p:dataViewGridItem>
+                <p:dataViewListItem>
+                    <div class="row d-flex" >
+                        <div class="col-lg-2 col-md-1" style="text-align: center" >
+                            <p:graphicImage url="/uploads/#{producto.imagenPrincipal}" styleClass="imagen-producto" />
+                        </div>
+                        <div class="col-lg-8 col-md-1 align-self-center" >
+                            <p:outputPanel>
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputText value="Nombre:" />
+                                    <h:outputText value="#{producto.nombre}" style="font-weight: bold" />
+                                    <h:outputText value="Precio:" />
+                                    <h:outputText value="$#{producto.precio}" />
+                                    <h:outputText value="Categorías:" />
 
-                </ul>
-                <div class="text-end">
-                    <h:form action="">
-                        <h:commandButton styleClass="btn btn-primary me-1" value="Ingresa"/>
-                        <h:commandButton styleClass="btn btn-primary"  value="Registrate" action="registrar_usuario?faces-redirect=true" />
-                    </h:form>
-                </div>
-
-            </div>
-        </nav>
-    </div>
-
-
-</h:body>
+                                    <h:outputText  value="#{producto.mostrarCategorias()}"/>
+                                </h:panelGrid>
+                            </p:outputPanel>
+                        </div>
+                        <div class="col-lg-2 col-md-1 align-self-center" >
+                            <p:commandButton value="Ver detalle" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" action="#{inicioBean.irADetalle(producto.codigo)}" />
+                        </div>
+                    </div>
+                </p:dataViewListItem>
+            </p:dataView>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </html>
