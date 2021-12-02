@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.List;
@@ -23,6 +25,7 @@ public class BusquedaBean implements Serializable {
 
     @Getter @Setter
     @Value("#{param['busqueda']}")
+
     private String busquedaParam;
 
     @Getter @Setter
@@ -33,13 +36,20 @@ public class BusquedaBean implements Serializable {
 
     @PostConstruct
     public void inicializar(){
+        System.out.println("COSA: "+busquedaParam);
         if(busquedaParam!=null && !busquedaParam.isEmpty()){
                 productos = productoServicio.buscarProductos(busquedaParam,null);
         }
     }
 
     public String buscar(){
-        return "resultado_busqueda?faces-redirect=true&amp;busqueda="+busqueda;
+        if(busquedaParam!=null && !busquedaParam.isEmpty()) {
+            return "resultado_busqueda?faces-redirect=true&amp;busqueda=" + busqueda;
+        }else{
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Ingresa algo para buscar");
+            FacesContext.getCurrentInstance().addMessage("search-msj", msg);
+        }
+        return null;
     }
 
 

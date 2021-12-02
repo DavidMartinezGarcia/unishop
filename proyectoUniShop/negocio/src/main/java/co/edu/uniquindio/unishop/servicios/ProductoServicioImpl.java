@@ -1,15 +1,19 @@
 package co.edu.uniquindio.unishop.servicios;
 
 
+import co.edu.uniquindio.unishop.dto.ProductoCarrito;
 import co.edu.uniquindio.unishop.entidades.*;
 import co.edu.uniquindio.unishop.repositorios.ComentarioRepo;
 import co.edu.uniquindio.unishop.repositorios.CompraRepo;
+import co.edu.uniquindio.unishop.repositorios.DetalleCompraRepo;
 import co.edu.uniquindio.unishop.repositorios.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +26,10 @@ public class ProductoServicioImpl implements ProductoServicio {
     @Autowired
     private ComentarioRepo comentarioRepo;
 
+    @Autowired
+    private DetalleCompraRepo detalleCompraRepo;
+
+    @Autowired
     private CompraRepo compraRepo;
 
     @Override
@@ -94,6 +102,35 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     @Override
     public List<Producto> listarProductos(Integer codigoUsuario) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Compra comprarProductos(Usuario usuario, ArrayList<ProductoCarrito> productos, MetodoPago metodoPago) {
+
+        try{
+            Compra c = new Compra();
+            c.setFecha(LocalDate.now(ZoneId.of("America/Bogota")));
+            c.setUsuario(usuario);
+            c.setMetodoDePago(metodoPago);
+
+            Compra compraGuardada = compraRepo.save(c);
+
+            DetalleCompra dc;
+
+            for(ProductoCarrito p : productos){
+
+                dc = new DetalleCompra();
+                dc.setCompra(compraGuardada);
+                dc.setCantidad(p.getUnidades());
+                dc.setProducto(productoRepo.findById(p.getId()).get());
+
+                detalleCompraRepo.save(dc);
+            }
+            return compraGuardada;
+        }catch (Exception e){
+
+        }
         return null;
     }
 }

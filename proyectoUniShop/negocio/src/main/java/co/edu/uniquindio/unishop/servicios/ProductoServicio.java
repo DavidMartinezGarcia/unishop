@@ -1,7 +1,9 @@
 package co.edu.uniquindio.unishop.servicios;
 
+import co.edu.uniquindio.unishop.dto.ProductoCarrito;
 import co.edu.uniquindio.unishop.entidades.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ProductoServicio {
@@ -28,5 +30,5 @@ public interface ProductoServicio {
 
     List<Producto> listarProductos(Integer codigoUsuario) throws Exception;
 
-
+    Compra comprarProductos(Usuario usuario, ArrayList<ProductoCarrito> productos, MetodoPago metodoPago) throws Exception;
 }

@@ -52,6 +52,9 @@ public class ProductoBean implements Serializable {
     @Getter @Setter
     private List<Ciudad> listaCiudades;
 
+    @Value("#{seguridadBean.usuarioSesion}")
+    private Usuario usuarioSesion;
+
     @PostConstruct
     public void inicializar(){
 
@@ -70,15 +73,18 @@ public class ProductoBean implements Serializable {
 
     public void crearProducto(){
         try {
-            if(!imagenes.isEmpty()) {
-                producto.setImagenes(imagenes);
-                producto.setFechaLimite(LocalDate.now().plusMonths(2));
-                productoServicio.publicarProducto(producto);
-                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Producto creado con exito");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-            }else{
-                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Alerta", "Es necesario subir al menos una imagen");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
+            if(usuarioSesion!=null) {
+                if (!imagenes.isEmpty()) {
+                    producto.setImagenes(imagenes);
+                    producto.setVendedor(usuarioSesion);
+                    producto.setFechaLimite(LocalDate.now().plusMonths(2));
+                    productoServicio.publicarProducto(producto);
+                    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Producto creado con exito");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                } else {
+                    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Alerta", "Es necesario subir al menos una imagen");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                }
             }
         } catch (Exception e) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());

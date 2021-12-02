@@ -226,3 +226,13 @@
     vertical-align: middle;
     margin: 0 10px 0 0;
 }
+
+.carrito-img{
+    width: 80px;
+    height: 80px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-right: 2px;
+    object-fit: cover;
+
+}

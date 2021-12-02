@@ -22,7 +22,7 @@
 <h:body>
     <div id="header" class="py-3 mb-0 border-bottom">
         <div id="header-container" class="container">
-            <a id="title-container" href="" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+            <a id="title-container" href="index.xhtml" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
                 <i class='bx bxs-cube-alt'/>
                 <span class="fs-4">UniShop</span>
             </a>
@@ -31,30 +31,33 @@
                     <p:inputText style="width: 500px" type="text" class="form-control" placeholder="¿Qué producto está buscando?" value="#{busquedaBean.busqueda}" />
                     <p:commandButton icon="pi pi-search" class="btn btn-outline-secondary" action="#{busquedaBean.buscar}" update="@form"/>
                 </div>
+                <p:growl for="search-msj" showDetail="true" />
             </h:form>
+
         </div>
         <div class="py-2 bg-light border-bottom">
             <div class="container d-flex flex-wrap">
                 <ul class="nav me-auto">
                     <li class="nav-item"><a href="index.xhtml" class="nav-link link-dark px-2">Inicio</a></li>
-                    <li class="nav-item"><a href="registrar_usuario.xhtml" class="nav-link link-dark px-2">Registrar Usuario</a></li>
-                    <li class="nav-item"> <a href="crear_producto.xhtml" class="nav-link link-dark px-2">Crear Producto</a> </li>
-
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"> <a href="/usuario/crear_producto.xhtml" class="nav-link link-dark px-2">Crear Producto</a> </li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/perfil.xhtml" class="nav-link link-dark px-2">Perfil</a></li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/carrito.xhtml" class="nav-link link-dark px-2">Carrito</a></li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/mis_compras.xhtml" class="nav-link link-dark px-2">Mis compras</a></li>
+                    <li class="nav-item"><a href=" " class="nav-link link-dark px-2">Categorias</a></li>
+                    <li class="nav-item"><a href=" " class="nav-link link-dark px-2">Descuentos</a></li>
                 </ul>
                 <div class="text-end">
                     <h:form action="" rendered="#{!seguridadBean.autenticado}">
                         <p:commandButton styleClass="btn btn-primary me-1" value="Ingresa" onclick="PF('login').show()" icon="pi pi-sign-in"/>
-                        <p:commandButton styleClass="btn btn-primary"  value="Registrate" action="registrar_usuario?faces-redirect=true" icon="pi pi-user-plus"/>
+                        <p:commandButton styleClass="btn btn-primary"  value="Registrate" action="registrar_usuario.xhtml?faces-redirect=true" icon="pi pi-user-plus"/>
                     </h:form>
                     <div id="info-sesion" jsf:rendered="#{seguridadBean.autenticado}">
                         <p>Bienvenido #{seguridadBean.usuarioSesion.nombre}</p>
                         <h:form>
-                            <p:commandButton styleClass="btn btn-primary me-1" value="Cerrar sesion" action="seguridadBean.cerrarSesion" icon="pi pi-sign-out"/>
+                            <p:commandButton styleClass="btn btn-primary me-1" action="#{seguridadBean.cerrarSesion}" value="Cerrar sesion" icon="pi pi-sign-out"/>
                         </h:form>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -75,6 +78,8 @@
             <p:growl for="login-bean" showDetail="true" />
         </h:form>
     </p:dialog>
+
+
     <div id="content">
         <div class="container">
             <ui:insert name="content">Contenido</ui:insert>
@@ -89,7 +94,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </h:body>
 </html>

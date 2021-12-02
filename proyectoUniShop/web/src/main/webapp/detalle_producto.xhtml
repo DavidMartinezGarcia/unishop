@@ -56,7 +56,7 @@
                         <p:rating value="#{detalleProductoBean.nuevoComentario.puntuacion}" required="true"/>
                     </h:panelGrid>
                     <p:commandButton value="Comentar" icon="pi pi-comment" iconPos="left" update="@form, lista-com" styleClass="mt-4" action="#{detalleProductoBean.crearComentario}" />
-                    <p:growl for="msj-pregunta" showDetail="true" />
+                    <p:growl showDetail="true"/>
                 </h:form>
             </p:panel>
         </div>
