@@ -1,19 +1,19 @@
 package co.edu.uniquindio.unishop.dto;
 
+import co.edu.uniquindio.unishop.entidades.MetodoPago;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Setter
 @Getter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ProductoCarrito {
+public class UsuarioCompra {
 
     @EqualsAndHashCode.Include
-    private Integer id;
-    private String nombre;
-    private String imagen;
-    private Double precio;
-    private Integer unidades;
+    private MetodoPago metodoPago;
+    private LocalDate fechaCompra;
 
 }

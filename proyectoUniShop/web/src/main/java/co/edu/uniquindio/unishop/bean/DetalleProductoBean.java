@@ -31,20 +31,19 @@ public class DetalleProductoBean implements Serializable {
     @Value("#{param['producto']}")
     private String codigoProducto;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private Producto producto;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private Comentario nuevoComentario;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private Integer calificacionPromedio;
 
-    @Getter
-    @Setter
+    @Getter @Setter
+    private Integer descuento;
+
+    @Getter @Setter
     private List<Comentario> comentarios;
 
     @Value(value = "#{seguridadBean.usuarioSesion}")
@@ -69,7 +68,7 @@ public class DetalleProductoBean implements Serializable {
     public void mostrarCalificacionPromedio() {
         int promedio = 0;
         int contador = 0;
-        if(producto.getComentarios() != null) {
+        if(producto.getComentarios() != null && producto.getComentarios().size() !=0) {
             for(Comentario comentario:producto.getComentarios()){
                 promedio += comentario.getPuntuacion();
                 contador++;
@@ -96,6 +95,15 @@ public class DetalleProductoBean implements Serializable {
         }
 
 
+    }
+
+    public void agregarFavoritos(){
+
+        try{
+            usuarioServicio.agregarProductoFavorito(producto,usuarioSesion);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
 

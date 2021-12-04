@@ -9,38 +9,50 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <ui:composition template="WEB-INF/template.xhtml">
-    <ui:define name="title">Registrar Usuar</ui:define>
+    <ui:define name="title">Registrar Usuario</ui:define>
     <ui:define name="content">
-   <h:body>
-            <p:panel header="Registrar Usuario">
+        <h:body >
+            <h1 class="display-5 mb-2 text-center">Registrar Usuario</h1>
+            <div class="row" style="margin-left: 230px" >
                 <h:form>
-                    <h:panelGrid columns="2" cellpadding="5">
+                    <h:panelGrid class="display-5" columns="2" cellpadding="5">
+                        <h:panelGrid class="display-5" columns="2" cellpadding="5">
 
-                        <p:outputLabel value = "Codigo: " for="codigo_u" />
-                        <p:inputText id="codigo_u" value="#{usuarioBean.usuario.codigo}" required="true"/>
+                            <p:outputLabel value = "Codigo: " for="codigo_u" />
+                            <p:inputText id="codigo_u" value="#{usuarioBean.usuario.codigo}" required="true"/>
 
-                        <p:outputLabel value = "Nombre: " for="nombre_u"/>
-                        <p:inputText id="nombre_u" value="#{usuarioBean.usuario.nombre}" required="true"/>
+                            <p:outputLabel value = "Nombre: " for="nombre_u"/>
+                            <p:inputText id="nombre_u" value="#{usuarioBean.usuario.nombre}" required="true"/>
 
-                        <p:outputLabel value = "Email: " for="email_u" />
-                        <p:inputText id="email_u" value="#{usuarioBean.usuario.email}" required="true"/>
+                            <p:outputLabel value = "Contraseña: " for="contrasenia_u" />
+                            <p:password id="contrasenia_u" value="#{usuarioBean.usuario.contrasenia}" required="true"/>
 
-                        <p:outputLabel value="Ciudad: " for="ciudad_u" />
-                        <p:selectOneMenu id = "ciudad_u" value="#{usuarioBean.usuario.ciudad}" converter="#{ciudadConverter}">
-                            <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true" />
-                            <f:selectItems value="#{usuarioBean.listaCiudades}" var="ciudad" itemLabel="#{ciudad.nombre}"/>
-                        </p:selectOneMenu>
+                            <p:outputLabel value = "Email: " for="email_u" />
+                            <p:inputText id="email_u" value="#{usuarioBean.usuario.email}" required="true"/>
 
-                        <p:outputLabel value = "Contraseña: " for="contrasenia_u" />
-                        <p:password id="contrasenia_u" value="#{usuarioBean.usuario.contrasenia}" required="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid class="display-5" columns="2" cellpadding="5" style="margin-left: 150px">
 
+                            <p:outputLabel value="Ciudad: " for="ciudad_u" />
+                            <p:selectOneMenu id = "ciudad_u" value="#{usuarioBean.usuario.ciudad}" converter="#{ciudadConverter}">
+                                <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true" />
+                                <f:selectItems value="#{usuarioBean.listaCiudades}" var="ciudad" itemLabel="#{ciudad.nombre}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value = "Telefono 1: " for="telefono_1" />
+                            <p:inputText id="telefono_1" value="#{usuarioBean.telefono1}" required="true"/>
+
+                            <p:outputLabel value = "Telefono 2: " for="telefono_2" />
+                            <p:inputText id="telefono_2" value="#{usuarioBean.telefono2}"/>
+
+                        </h:panelGrid>
                     </h:panelGrid>
 
                     <p:growl showDetail="true" />
-                    <p:commandButton value="Registrar Usuario" action="#{usuarioBean.registrarUsuario}" update = "@form" icon="pi pi-plus"/>
+                    <p:commandButton value="Registrar Usuario" action="#{usuarioBean.registrarUsuario}" update = "@form" icon="pi pi-plus" style="margin: 30px; margin-left: 340px"/>
 
                 </h:form>
-            </p:panel>
+            </div>
         </h:body>
     </ui:define>
 </ui:composition>

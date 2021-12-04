@@ -16,13 +16,12 @@
     <h:outputStylesheet library="css" name="bootstrap.min.css"/>
     <h:outputStylesheet library="css" name="styles.css"/>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'/>
-
     <h:outputScript library="js" name="bootstrap.bundle.min.js"/>
 </h:head>
 <h:body>
     <div id="header" class="py-3 mb-0 border-bottom">
         <div id="header-container" class="container">
-            <a id="title-container" href="index.xhtml" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+            <a id="title-container" href="/index.xhtml" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
                 <i class='bx bxs-cube-alt'/>
                 <span class="fs-4">UniShop</span>
             </a>
@@ -33,25 +32,36 @@
                 </div>
                 <p:growl for="search-msj" showDetail="true" />
             </h:form>
-
         </div>
         <div class="py-2 bg-light border-bottom">
             <div class="container d-flex flex-wrap">
-                <ul class="nav me-auto">
-                    <li class="nav-item"><a href="index.xhtml" class="nav-link link-dark px-2">Inicio</a></li>
-                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"> <a href="/usuario/crear_producto.xhtml" class="nav-link link-dark px-2">Crear Producto</a> </li>
-                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/perfil.xhtml" class="nav-link link-dark px-2">Perfil</a></li>
-                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/carrito.xhtml" class="nav-link link-dark px-2">Carrito</a></li>
-                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/mis_compras.xhtml" class="nav-link link-dark px-2">Mis compras</a></li>
-                    <li class="nav-item"><a href=" " class="nav-link link-dark px-2">Categorias</a></li>
-                    <li class="nav-item"><a href=" " class="nav-link link-dark px-2">Descuentos</a></li>
+                <ul class="nav me-auto" style="margin-top: 10px">
+                    <li class="nav-item"><a href="/index.xhtml" class="nav-link link-dark px-1"><i class='bx bx-home'/><br/>Inicio</a></li>
+                    <li class="nav-item"><a href="/descuentos.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bxs-offer'/><br/>Descuentos</a></li>
+                    <h:form>
+                        <li class="nav-item">
+                            <i class='bx bx-purchase-tag' style="font-size: 30px"/>
+                            <button class="dropdown-toggle btn btn btn-outline-light" style="color: black" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categorias
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <p:repeat value="#{seguridadBean.categorias}" var="categoria"><li><p:commandButton styleClass="ui-button-flat" style="color: black" update="@form" value="#{categoria.nombre}" action="#{busquedaBean.buscarCategoria(categoria)}"/></li></p:repeat>
+                            </ul>
+                        </li>
+                    </h:form>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/perfil.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-user'/><br/>Perfil</a></li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/crear_producto.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-add-to-queue'/><br/>Crear Producto</a> </li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/mis_compras.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-shopping-bag'/><br/>Mis compras</a></li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/mis_productos.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-receipt'/><br/>Mis productos</a></li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/favoritos.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-star'></i><br/>Favoritos</a></li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/carrito.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-cart'/><br/>Carrito</a></li>
                 </ul>
                 <div class="text-end">
                     <h:form action="" rendered="#{!seguridadBean.autenticado}">
                         <p:commandButton styleClass="btn btn-primary me-1" value="Ingresa" onclick="PF('login').show()" icon="pi pi-sign-in"/>
                         <p:commandButton styleClass="btn btn-primary"  value="Registrate" action="registrar_usuario.xhtml?faces-redirect=true" icon="pi pi-user-plus"/>
                     </h:form>
-                    <div id="info-sesion" jsf:rendered="#{seguridadBean.autenticado}">
+                    <div id="info-sesion" jsf:rendered="#{seguridadBean.autenticado}" style="margin: 15px">
                         <p>Bienvenido #{seguridadBean.usuarioSesion.nombre}</p>
                         <h:form>
                             <p:commandButton styleClass="btn btn-primary me-1" action="#{seguridadBean.cerrarSesion}" value="Cerrar sesion" icon="pi pi-sign-out"/>
@@ -62,19 +72,35 @@
         </div>
     </div>
 
-    <p:dialog header="Iniciar sesión" showEffect="fade" widgetVar="login" modal="true" rendered="#{!seguridadBean.autenticado}" >
-        <h:form >
-            <h:panelGrid columns="3" cellpadding="5">
-                <p:outputLabel for="email_login" value="Email:" />
-                <p:inputText id="email_login" value="#{seguridadBean.email}" required="true" />
-                <p:message for="email_login" />
-                <p:outputLabel for="password_login" value="Password:" />
-                <p:password id="password_login" value="#{seguridadBean.password}" required="true"
-                />
-                <p:message for="password_login" />
-            </h:panelGrid>
-            <p:commandButton value="Iniciar Sesión" action="#{seguridadBean.iniciarSesion}"
-                             styleClass="mt-4" update="@form" icon="pi pi-sign-in" iconPos="left" />
+    <p:dialog header="Iniciar sesión" showEffect="fade" widgetVar="login" modal="true" rendered="#{!seguridadBean.autenticado}" styleClass="align-middle">
+        <h:form  >
+            <div class="row" style="padding: 0px">
+                <div class="col">
+                    <p:outputLabel for="email_login" value="Correo electrónico:" />
+
+                </div>
+                <div class="col">
+                    <p:inputText id="email_login" value="#{seguridadBean.email}" required="true" />
+
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px">
+                <div class="col">
+                    <p:outputLabel for="password_login" value="Password:" />
+                </div>
+                <div class="col">
+                    <p:password id="password_login" value="#{seguridadBean.password}" required="true"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <a href="/recuperar_contrasenia.xhtml">Recuperar contraseña</a>
+                </div>
+            </div>
+            <div style="margin-left: 80px">
+                <p:commandButton value="Iniciar Sesión" action="#{seguridadBean.iniciarSesion}" styleClass="mt-4" update="@form" style="alignment: right" icon="pi pi-sign-in" />
+            </div>
             <p:growl for="login-bean" showDetail="true" />
         </h:form>
     </p:dialog>

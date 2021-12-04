@@ -22,7 +22,8 @@ public class CategoriaServicioImpl implements CategoriaServicio, Serializable {
     }
 
     @Override
-    public Categoria obtenerCategoria(Integer id) throws Exception {
-        return categoriaRepo.findById(id).orElseThrow(() -> new Exception("El id no corresponde a ninguna categoría"));
+    public Categoria obtenerCategoria(Integer id) {
+        return categoriaRepo.findById(id).orElse(null);
+
     }
 }

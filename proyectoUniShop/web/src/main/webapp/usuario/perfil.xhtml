@@ -8,9 +8,88 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <ui:composition template="../WEB-INF/template.xhtml">
-    <ui:define name="title">Perfil</ui:define>
+    <ui:define name="title">Mi perfil</ui:define>
     <ui:define name="content">
 
+        <h1 class="display-5 mb-2 text-center" style="margin-top: 20px">Perfil del Usuario</h1>
+        <div class="container emp-profile" style="margin-top: 30px;">
+            <h:form method="post">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-img">
+                            <p:graphicImage styleClass="rounded-circle" style="height: 300px; width: 300px; margin: 50px;" url="/uploads/avatar.png" />
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="margin-left: 37px">
+                        <div class="profile-head display-4" style="font-size: 22px">
+                            <h5 style="font-size: 33px; margin-top: 25px"> #{seguridadBean.usuarioSesion.nombre}</h5>
+                            <h6 > #{seguridadBean.usuarioSesion.tipoUsuario.nombre}</h6>
+                            <p class="proile-rating"></p>
+
+                            <div class="tab-content profile-tab" id="myTabContent" >
+                                <div class="tab-pane fade show active" id="home" style="margin-top: 35px">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Codigo</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mt-1"> #{seguridadBean.usuarioSesion.codigo}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Nombre</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>#{seguridadBean.usuarioSesion.nombre}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Email</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>#{seguridadBean.usuarioSesion.email}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Phone</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p:repeat value="#{seguridadBean.usuarioSesion.telefonos}" var="telefono">
+                                                <p>#{telefono}</p>
+                                            </p:repeat>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Ciudad</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mt-1"> #{seguridadBean.usuarioSesion.ciudad.nombre}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right align-middle"  style="margin-top: 60px; margin-left: 140px">
+                            <p:commandButton icon ="pi pi-pencil" class="profile-edit-btn btn btn-primary" style ="font-size: 22px" id="editar" value="Editar Perfil"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="profile-work">
+
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
     </ui:define>
 </ui:composition>
 </html>

@@ -1,6 +1,8 @@
 package co.edu.uniquindio.unishop.bean;
 
+import co.edu.uniquindio.unishop.entidades.Categoria;
 import co.edu.uniquindio.unishop.entidades.Producto;
+import co.edu.uniquindio.unishop.servicios.CategoriaServicio;
 import co.edu.uniquindio.unishop.servicios.ProductoServicio;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,11 +24,16 @@ public class BusquedaBean implements Serializable {
     @Getter @Setter
     private String busqueda;
 
+    @Getter @Setter
+    private Categoria categoriaBuscada;
 
     @Getter @Setter
     @Value("#{param['busqueda']}")
-
     private String busquedaParam;
+
+    @Getter @Setter
+    @Value("#{param['categoria']}")
+    private String categoriaParam;
 
     @Getter @Setter
     private List<Producto> productos;
@@ -34,23 +41,46 @@ public class BusquedaBean implements Serializable {
     @Autowired
     private ProductoServicio productoServicio;
 
+    @Autowired
+    private CategoriaServicio categoriaServicio;
+
     @PostConstruct
     public void inicializar(){
-        System.out.println("COSA: "+busquedaParam);
+        System.out.println("Entra inicializar: "+categoriaParam);
         if(busquedaParam!=null && !busquedaParam.isEmpty()){
                 productos = productoServicio.buscarProductos(busquedaParam,null);
+        }
+        if(categoriaParam!=null && !categoriaParam.isEmpty()){
+            System.out.println("Entra categoria param");
+            Integer codigo = Integer.parseInt(categoriaParam);
+            Categoria categoria = categoriaServicio.obtenerCategoria(codigo);
+            productos = productoServicio.listarProductosCategoria(categoria);
+            System.out.println("Productos: "+productos.toString());
         }
     }
 
     public String buscar(){
-        if(busquedaParam!=null && !busquedaParam.isEmpty()) {
+        if(!busqueda.trim().equals("")) {
             return "resultado_busqueda?faces-redirect=true&amp;busqueda=" + busqueda;
-        }else{
+        }
+        else{
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Ingresa algo para buscar");
             FacesContext.getCurrentInstance().addMessage("search-msj", msg);
         }
         return null;
     }
 
-
+    public String buscarCategoria(Categoria categoria){
+        System.out.println("Entra");
+        this.categoriaBuscada = categoria;
+        if(!categoriaBuscada.equals(null)){
+            System.out.println("Entra if magico");
+            return "resultado_busqueda?faces-redirect=true&amp;categoria="+categoriaBuscada.getCodigoCategoria();
+        }
+        else{
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Ingresa algo para buscar");
+            FacesContext.getCurrentInstance().addMessage("search-msj", msg);
+        }
+        return null;
+    }
 }

@@ -57,7 +57,6 @@ public class ProductoBean implements Serializable {
 
     @PostConstruct
     public void inicializar(){
-
         producto = new Producto();
         this.imagenes = new ArrayList<>();
         listaCategorias = categoriaServicio.listarCategorias();
@@ -115,5 +114,17 @@ public class ProductoBean implements Serializable {
         return null;
     }
 
+    public void eliminarProducto(Integer codigo){
+        try {
+            System.out.println("Eliminar producto");
+            productoServicio.eliminarProducto(codigo);
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Producto eliminado con exito");
+            FacesContext.getCurrentInstance().addMessage("mis-productos", fm);
+        } catch (Exception e) {
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("mis-productos", fm);
+            e.printStackTrace();
+        }
+    }
 
 }

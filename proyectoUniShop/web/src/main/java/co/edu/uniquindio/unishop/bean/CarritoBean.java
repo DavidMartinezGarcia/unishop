@@ -44,8 +44,8 @@ public class CarritoBean {
     public void inicializar(){
         nuevoCantidad = 1;
     }
-    public void crearCompra(){
 
+    public void crearCompra(){
 
         DetalleCompra detalle = new DetalleCompra();
         Compra compra = new Compra();

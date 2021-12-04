@@ -1,9 +1,11 @@
 package co.edu.uniquindio.unishop.bean;
 
 import co.edu.uniquindio.unishop.dto.ProductoCarrito;
+import co.edu.uniquindio.unishop.entidades.Categoria;
 import co.edu.uniquindio.unishop.entidades.MetodoPago;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.servicios.CategoriaServicio;
 import co.edu.uniquindio.unishop.servicios.ProductoServicio;
 import co.edu.uniquindio.unishop.servicios.UsuarioServicio;
 import lombok.Getter;
@@ -17,22 +19,19 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Scope("session")
 public class SeguridadBean implements Serializable{
 
-
-    @Getter
-    @Setter
+    @Getter @Setter
     private boolean autenticado;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private String email, password;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private Usuario usuarioSesion;
 
     @Autowired
@@ -41,16 +40,31 @@ public class SeguridadBean implements Serializable{
     @Autowired
     private ProductoServicio productoServicio;
 
+    @Autowired
+    private CategoriaServicio categoriaServicio;
+
     @Getter @Setter
     private ArrayList<ProductoCarrito> productosCarrito;
 
     @Getter @Setter
+    private MetodoPago metodosDePago[];
+
+    @Getter @Setter
     private Double subtotal;
+
+    @Getter @Setter
+    private MetodoPago metodoPago;
+
+    @Getter @Setter
+    List<Categoria> categorias;
+
 
     @PostConstruct
     public void inicializar(){
         this.subtotal = 0D;
         this.productosCarrito = new ArrayList<>();
+        this.metodosDePago = MetodoPago.values();
+        this.categorias = categoriaServicio.listarCategorias();
     }
     public String cerrarSesion(){
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
@@ -62,6 +76,7 @@ public class SeguridadBean implements Serializable{
         return null;
     }
     public String iniciarSesion() {
+
         if (!email.isEmpty() && !password.isEmpty()) {
             try {
                 usuarioSesion = usuarioServicio.iniciarSesion(email, password);
@@ -71,6 +86,9 @@ public class SeguridadBean implements Serializable{
                 FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
                 FacesContext.getCurrentInstance().addMessage("login-bean", fm);
             }
+        }else{
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe llenar los datos requeridos");
+            FacesContext.getCurrentInstance().addMessage("add-cart", fm);
         }
         return null;
     }
@@ -128,6 +146,20 @@ public class SeguridadBean implements Serializable{
 
         }
 
+    }
+    public boolean descontarProducto(Double descuento){
+
+        boolean descontado= false;
+
+        if(descuento>0){
+            descontado = true;
+        }
+        return descontado;
+    }
+
+    public String irARecuperar(){
+
+        return "/recuperar_contrasenia?faces-redirect=true";
     }
 
 }

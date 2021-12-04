@@ -71,6 +71,19 @@ public class UsuarioServicioImpl implements UsuarioServicio{
         }
         return usuarioRepo.obtenerProductoFavoritos(email);
     }
+    @Override
+    public List<Producto> obtenerFavoritos(Integer codigo) throws  Exception{
+        return usuarioRepo.obtenerProductosFavoritos(codigo);
+    }
+    @Override
+    public void agregarProductoFavorito(Producto producto, Usuario usuario) throws Exception{
+
+        System.out.println("Servicio 1");
+        usuario.getListaFavoritos().add(producto);
+        System.out.println("Servicio 2");
+        usuarioRepo.save(usuario);
+        System.out.println("Servicio 3");
+    }
 
     @Override
     public Usuario obtenerUsuario(Integer id) throws Exception {
@@ -85,4 +98,10 @@ public class UsuarioServicioImpl implements UsuarioServicio{
     public Usuario iniciarSesion(String email, String password) throws Exception{
         return usuarioRepo.findByEmailAndContrasenia(email,password).orElseThrow( () -> new Exception("Los datos de autenticacion son incorrectos"));
     }
+    public  Usuario recuperarContrasenia(String email, Integer codigo) throws  Exception{
+
+        return usuarioRepo.findByEmailAndCodigo(email, codigo).orElseThrow( () -> new Exception("El usuario no existe"));
+    }
+
+
 }

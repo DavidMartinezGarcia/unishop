@@ -16,7 +16,7 @@ public interface ProductoServicio {
 
     Producto obtenerProducto(Integer codigo) throws Exception;
 
-    List<Producto> listarProductos(Categoria categoria);
+    List<Producto> listarProductosCategoria(Categoria categoria);
 
     List<Producto> listarTodosLosProductos() throws Exception;
 
@@ -24,11 +24,17 @@ public interface ProductoServicio {
 
     void eliminarProductoFavorito(Producto producto, Usuario usuario) throws Exception;
 
+    void agregarProductoFavorito(Producto producto, Usuario usuario) throws Exception;
+
     Compra comprarProductos(Compra compra) throws Exception;
 
     List<Producto> buscarProductos(String nombreProducto, String[] filtros);
 
-    List<Producto> listarProductos(Integer codigoUsuario) throws Exception;
+    List<Producto> listarProductosVendedor(Integer codigoUsuario) throws Exception;
 
     Compra comprarProductos(Usuario usuario, ArrayList<ProductoCarrito> productos, MetodoPago metodoPago) throws Exception;
+
+    List<Producto> buscarProductosDescuento() throws Exception;
+
+
 }

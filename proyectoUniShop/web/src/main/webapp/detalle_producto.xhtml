@@ -22,12 +22,22 @@
                 </div>
 
                 <div class="col-lg-5 col-md-1">
+                    <div align="right">
+
+
+                    </div>
                     <div class="p-grid">
                         <div class="box">
-                            <p:rating value="#{detalleProductoBean.calificacionPromedio}" readonly="true" disabled="true"/>
-                            <h1 class="mt-4">#{detalleProductoBean.producto.nombre}</h1>
 
-                            <h1 class="mt-4">$#{detalleProductoBean.producto.precio}</h1>
+                            <p:commandButton style="alignment: right" rendered="#{seguridadBean.autenticado}" action="#{detalleProductoBean.agregarFavoritos()}" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-flat" />
+
+                            <h1 class="mt-4">#{detalleProductoBean.producto.nombre}</h1>
+                            <p:rating value="#{detalleProductoBean.calificacionPromedio}" readonly="true" disabled="true"/>
+
+                            <h:outputLabel rendered="#{!seguridadBean.descontarProducto(detalleProductoBean.producto.descuento)}" class="mt-4" >$#{detalleProductoBean.producto.precio} </h:outputLabel>
+                            <h:outputLabel rendered="#{seguridadBean.descontarProducto(detalleProductoBean.producto.descuento)}" class="mt-4" style="text-decoration:line-through">$#{detalleProductoBean.producto.precio} </h:outputLabel><br/>
+                            <h:outputLabel rendered="#{seguridadBean.descontarProducto(detalleProductoBean.producto.descuento)}" class="mt-4">$#{detalleProductoBean.producto.calcularPrecioDescuento()}</h:outputLabel>
+                            <h:outputLabel rendered="#{seguridadBean.descontarProducto(detalleProductoBean.producto.descuento)}" class="mt-4">&nbsp;&nbsp;#{detalleProductoBean.producto.descuento}% OFF</h:outputLabel>
                             <h:form class="mt-4" rendered="#{seguridadBean.autenticado}">
                                 <p:commandButton value="Añadir al carrito" icon="pi pi-shopping-cart" update="@form" action="#{seguridadBean.agregarAlCarrito(detalleProductoBean.producto.codigo, detalleProductoBean.producto.precio, detalleProductoBean.producto.nombre, detalleProductoBean.producto.imagenPrincipal)}" />
                                 <p:growl for="add-cart" showDetail="true" />

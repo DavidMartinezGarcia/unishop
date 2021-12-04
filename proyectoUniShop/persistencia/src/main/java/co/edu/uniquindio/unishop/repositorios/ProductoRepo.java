@@ -43,4 +43,14 @@ public interface ProductoRepo extends JpaRepository<Producto, Integer> {
 
     @Query("select p from Producto p where :categoria member of p.listaCategorias")
     List<Producto> buscarProductosCategoria(Categoria categoria);
+
+    //Consulta para obtener los productos con descuento
+    @Query("select p from Producto p where p.descuento > 0")
+    List<Producto> buscarProductosDescuento();
+
+    //Consulta para obtener los productos publicados por un ususario
+    @Query("select p from Producto p where p.vendedor.codigo = :codigoUsuario")
+    List<Producto> buscarProductosVendedor(Integer codigoUsuario);
+
+
 }

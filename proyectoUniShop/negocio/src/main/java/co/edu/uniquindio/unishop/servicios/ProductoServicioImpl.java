@@ -63,7 +63,7 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
     @Override
-    public List<Producto> listarProductos(Categoria categoria) {
+    public List<Producto> listarProductosCategoria(Categoria categoria) {
         return productoRepo.buscarProductosCategoria(categoria);
     }
 
@@ -76,6 +76,21 @@ public class ProductoServicioImpl implements ProductoServicio {
     public void comentarProducto(Comentario comentario) throws Exception {
         comentario.setFecha(LocalDate.now());
         comentarioRepo.save(comentario);
+    }
+    @Override
+    public void agregarProductoFavorito(Producto producto, Usuario usuario) throws Exception{
+
+        Optional<Producto> buscado = productoRepo.findById((producto.getCodigo())); //Revisar
+
+        producto.getListaUsuarios().add(usuario);
+
+        if(producto.getListaUsuarios() == null){
+            System.out.println("Es nula :c");
+        }else{
+            System.out.println("WTF?");
+        }
+
+        productoRepo.save(producto);
     }
 
     @Override
@@ -101,8 +116,8 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
     @Override
-    public List<Producto> listarProductos(Integer codigoUsuario) throws Exception {
-        return null;
+    public List<Producto> listarProductosVendedor(Integer codigoUsuario) throws Exception {
+        return productoRepo.buscarProductosVendedor(codigoUsuario);
     }
 
     @Override
@@ -133,4 +148,11 @@ public class ProductoServicioImpl implements ProductoServicio {
         }
         return null;
     }
+
+    @Override
+    public List<Producto> buscarProductosDescuento() throws Exception{
+
+        return productoRepo.buscarProductosDescuento();
+    }
+
 }

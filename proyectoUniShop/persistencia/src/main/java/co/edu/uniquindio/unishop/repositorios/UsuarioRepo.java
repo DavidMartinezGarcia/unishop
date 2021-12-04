@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.repositorios;
 
+import co.edu.uniquindio.unishop.entidades.Compra;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Usuario;
 import org.springframework.data.domain.Page;
@@ -26,9 +27,20 @@ public interface UsuarioRepo extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByEmailAndContrasenia(String email, String contrasenia);
 
+    //Consulta para obtener un usuario dado su correo y codigo
+    Optional<Usuario> findByEmailAndCodigo(String email, Integer codigo);
+
     Page<Usuario> findAll(Pageable paginador);
 
     //La lista del IN siempre va entre parentesis y el IN y JOIN solo funcionan cunado quiero relacionar un objeto con una lista
     @Query("select p from Usuario u, IN (u.listaFavoritos) p where u.email = :email")
     List<Producto> obtenerProductoFavoritos(String email);
+
+    //Consulta para obtener los productos de un ususario dado su codigo
+    @Query("select p from Usuario u, IN (u.listaFavoritos) p where u.codigo = :codigo")
+    List<Producto> obtenerProductosFavoritos(Integer codigo);
+
+    //Consulta para obtener los productos comprados por un usuario
+    @Query("select p from Usuario u, IN (u.compras) p where u.codigo = :codigoUsuario")
+    List<Compra> obtenerCompras(Integer codigoUsuario);
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +87,7 @@ public class Producto implements Serializable {
         this.fechaLimite = fechaLimite;
         this.vendedor = vendedor;
         this.listaCategorias = categorias;
+        listaUsuarios = new ArrayList<>();
 
     }
 
@@ -107,5 +109,8 @@ public class Producto implements Serializable {
             }
         }
         return resultado;
+    }
+    public Double calcularPrecioDescuento(){
+        return precio - (precio*descuento/100);
     }
 }

@@ -8,5 +8,5 @@ public interface CategoriaServicio {
 
     List<Categoria> listarCategorias();
 
-    Categoria obtenerCategoria(Integer id) throws Exception;
+    Categoria obtenerCategoria(Integer id);
 }
