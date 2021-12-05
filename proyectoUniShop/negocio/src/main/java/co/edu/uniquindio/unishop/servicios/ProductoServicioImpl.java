@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +152,10 @@ public class ProductoServicioImpl implements ProductoServicio {
     public List<Producto> buscarProductosDescuento() throws Exception{
 
         return productoRepo.buscarProductosDescuento();
+    }
+    @Override
+    public List<Producto> buscarProductosSubastados() throws Exception{
+        return  productoRepo.buscarProductosSubastados();
     }
 
 }

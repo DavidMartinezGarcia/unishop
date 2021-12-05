@@ -130,17 +130,19 @@ public class SeguridadBean implements Serializable{
     }
     public void comprar(){
 
-        if(usuarioSesion!=null && !productosCarrito.isEmpty()){
+        if(usuarioSesion!=null && !productosCarrito.isEmpty() && metodoPago!=null){
             try{
-                //El metodo de pago esta quemado y toca implementarlo !!
-                productoServicio.comprarProductos(usuarioSesion, productosCarrito, MetodoPago.NEQUI);
+                //MetodoPago metodo = MetodoPago.valueOf(metodoPago);
+                System.out.println("Seguridad Bean metodoPago: "+metodoPago);
+
+                productoServicio.comprarProductos(usuarioSesion, productosCarrito, metodoPago);
                 productosCarrito.clear();
                 subtotal = 0D;
                 FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Compra realizada con exito");
                 FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
 
             }catch(Exception e){
-                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "El producto ya se encuentra en el carrito");
+                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", e.getMessage());
                 FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
             }
 

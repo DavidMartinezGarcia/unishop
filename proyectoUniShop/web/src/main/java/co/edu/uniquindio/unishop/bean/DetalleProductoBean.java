@@ -100,6 +100,7 @@ public class DetalleProductoBean implements Serializable {
     public void agregarFavoritos(){
 
         try{
+            System.out.println("BEAN    U: "+usuarioSesion.getNombre() + "\t P: "+ producto.getNombre());
             usuarioServicio.agregarProductoFavorito(producto,usuarioSesion);
         }catch(Exception e){
             e.printStackTrace();

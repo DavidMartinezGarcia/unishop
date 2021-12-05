@@ -46,16 +46,13 @@ public class BusquedaBean implements Serializable {
 
     @PostConstruct
     public void inicializar(){
-        System.out.println("Entra inicializar: "+categoriaParam);
         if(busquedaParam!=null && !busquedaParam.isEmpty()){
                 productos = productoServicio.buscarProductos(busquedaParam,null);
         }
         if(categoriaParam!=null && !categoriaParam.isEmpty()){
-            System.out.println("Entra categoria param");
             Integer codigo = Integer.parseInt(categoriaParam);
             Categoria categoria = categoriaServicio.obtenerCategoria(codigo);
             productos = productoServicio.listarProductosCategoria(categoria);
-            System.out.println("Productos: "+productos.toString());
         }
     }
 

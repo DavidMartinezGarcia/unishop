@@ -63,8 +63,8 @@
         </div>
         <div class="text-end">
             <div class="p-field p-col-12 p-md-4">
-                <p:outputLabel value="Metodo de pago"/>
-                <p:selectOneMenu id="metodoPago">
+                <p:outputLabel value="Metodo de pago" for="metodo_pago"/>
+                <p:selectOneMenu id="metodo_pago" value="#{seguridadBean.metodoPago}">
                     <f:selectItem itemLabel="Seleccione un metodo de pago" noSelectionOption="true" />
                     <f:selectItems value="#{seguridadBean.metodosDePago}" var="metodo" itemLabel="#{metodo}"/>
                 </p:selectOneMenu>

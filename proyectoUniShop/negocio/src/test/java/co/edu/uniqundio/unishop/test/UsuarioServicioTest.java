@@ -2,8 +2,10 @@ package co.edu.uniqundio.unishop.test;
 
 import co.edu.uniquindio.unishop.NegocioApplication;
 import co.edu.uniquindio.unishop.entidades.Ciudad;
+import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.TipoUsuario;
 import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.servicios.ProductoServicio;
 import co.edu.uniquindio.unishop.servicios.UsuarioServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,8 @@ public class UsuarioServicioTest {
 
     @Autowired
     private UsuarioServicio usuarioServicio;
+    @Autowired
+    private ProductoServicio productoServicio;
 
     @Test
     public void registrarUsuarioTest(){
@@ -57,13 +61,26 @@ public class UsuarioServicioTest {
     public void actualizar(){
 
         try{
-            Usuario u = usuarioServicio.obtenerUsuario(123);
+            Usuario u = usuarioServicio.obtenerUsuario(1006290156);
             u.setContrasenia("askldfjñlasd");
             Usuario respuesta = usuarioServicio.actualizarUsuario(u);
             Assertions.assertNotNull(respuesta);
 
         }catch(Exception e){
             e.printStackTrace();
+        }
+
+    }
+    @Test
+    public void agregarFavoritos(){
+
+        try{
+            Usuario u = usuarioServicio.obtenerUsuario(1006290156);
+            Producto p = productoServicio.obtenerProducto(1);
+            usuarioServicio.agregarProductoFavorito(p,u);
+
+        }catch(Exception e){
+           e.printStackTrace();
         }
 
     }

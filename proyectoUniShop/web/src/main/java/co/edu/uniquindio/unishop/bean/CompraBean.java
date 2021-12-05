@@ -38,17 +38,20 @@ public class CompraBean implements Serializable {
     @PostConstruct
     public void inicializar(){
 
-            this.listaCompras = new ArrayList<>();
+            this.listaProductosCompra = new ArrayList<>();
     }
 
     public void agregarDetalleUsuario(Integer codigoCompra){
 
         try {
-            List<Producto> listaProductosCompra = compraServicio.listarProductosCompra(codigoCompra);
-             for(Producto producto: listaProductosCompra){
+            List<Producto> listaProductosCompras = compraServicio.listarProductosCompra(codigoCompra);
+             for(Producto producto: listaProductosCompras){
 
                     ProductoCarrito productoCompra = new ProductoCarrito(producto.getCodigo(), producto.getNombre(),
                             producto.getImagenPrincipal(), producto.getPrecio(), producto.getUnidadesDisponibles());
+
+                    listaProductosCompra.add(productoCompra);
+                 System.out.println(listaProductosCompra.size()+"e");
 
              }
         } catch (Exception e) {

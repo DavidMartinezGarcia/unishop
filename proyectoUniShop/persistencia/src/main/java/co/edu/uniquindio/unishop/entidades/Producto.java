@@ -68,7 +68,7 @@ public class Producto implements Serializable {
     @OneToOne
     private Subasta subasta;
 
-    @ManyToMany(mappedBy = "listaFavoritos")
+    @ManyToMany
     @ToString.Exclude
     private List<Usuario> listaUsuarios;
 
@@ -87,7 +87,6 @@ public class Producto implements Serializable {
         this.fechaLimite = fechaLimite;
         this.vendedor = vendedor;
         this.listaCategorias = categorias;
-        listaUsuarios = new ArrayList<>();
 
     }
 

@@ -112,10 +112,8 @@ public class UsuarioBean implements Serializable {
             List<Compra> listasCompra = compraServicio.listarComprasUsuario(codigoUsuario);
             for(Compra compra: listasCompra){
                 UsuarioCompra compraUsuario =  new UsuarioCompra(compra.getMetodoDePago(), compra.getFecha());
-
-                if(!listaCompras.contains(compraUsuario)){
                     listaCompras.add(compraUsuario);
-                }
+
             }
         } catch (Exception e) {
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
@@ -134,9 +132,9 @@ public class UsuarioBean implements Serializable {
             List<Producto> productosVendedor = usuarioServicio.obtenerFavoritos(codigo);
             for (Producto producto: productosVendedor) {
                 ProductoUsuario productoUsuario = new ProductoUsuario(producto.getCodigo(),producto.getNombre(),producto.getImagenPrincipal(),producto.getPrecio(),producto.getUnidadesDisponibles());
-                if(!productosFavoritos.contains(productoUsuario)){
-                    productosFavoritos.add(productoUsuario);
-                }
+
+                        productosFavoritos.add(productoUsuario);
+
             }
 
 

@@ -35,12 +35,14 @@
                     <div class="col-md-2 text-left">
                       <table id="ProductoCompra" class ="table table-condensed table-responsive">
                         <thead>
-                          <tr>
-                            <th style="width:50%">Producto</th>
-                            <th style="width:12%">Precio</th>
-                          </tr>
+                        <tr>
+                          <th style="width: 50%">#{compraBean.agregarDetalleUsuario(seguridadBean.usuarioSesion.codigo)}</th>
+                          <th style="width:50%">Producto</th>
+                          <th style="width:12%">Precio</th>
+                        </tr>
                         </thead>
                         <tbody>
+                        <h1 class="display-6 mb-2 text-center"> #{compraBean.listaProductosCompra.size()}Producto</h1>
                         <p:repeat value="#{compraBean.listaProductosCompra}" var="productos" varStatus="p">
                           <tr>
                             <td>
@@ -50,7 +52,7 @@
                                 </div>
                               </div>
                             </td>
-                          <td class="align-middle">$#{productos.nombre}</td>
+                            <td class="align-middle">$#{productos.nombre}</td>
                             <td class="align-middle">$#{productos.precio}</td>
                           </tr>
                         </p:repeat>

@@ -36,5 +36,7 @@ public interface ProductoServicio {
 
     List<Producto> buscarProductosDescuento() throws Exception;
 
+    List<Producto> buscarProductosSubastados() throws Exception;
+
 
 }
