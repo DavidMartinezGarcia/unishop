@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,10 +25,12 @@ public class Ciudad {
 
     @OneToMany(mappedBy = "ciudad")
     @ToString.Exclude
+    @JsonIgnore
     private List<Usuario> usuarios;
 
     @OneToMany(mappedBy = "ubicacion")
     @ToString.Exclude
+    @JsonIgnore
     private List<Producto> productos;
 
     public Ciudad(String nombre) {

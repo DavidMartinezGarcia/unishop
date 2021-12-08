@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Compra implements Serializable {
 
     @OneToMany(mappedBy = "compra")
     @ToString.Exclude
+    @JsonIgnore
     private List<DetalleCompra> detalleCompras;
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

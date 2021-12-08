@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Categoria {
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "listaCategorias")
+    @JsonIgnore
     private List<Producto> listaProductos;
 
     public Categoria(String nombre) {

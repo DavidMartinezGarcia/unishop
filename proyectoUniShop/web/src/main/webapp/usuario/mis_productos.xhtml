@@ -47,7 +47,7 @@
                                     <div class="text-right">
                                         <p:commandButton value="Eliminar" icon ="pi pi-trash" update="@form" action="#{productoBean.eliminarProducto(producto.id)}" styleClass="btn btn-white border-secondary bg-white btn-md mb-2 h5 mt-2"/>
                                     </div>
-                                    <p:commandButton value="Subastar" icon ="pi pi-sort-amount-up" update="@form" action="#{productoBean.subastarProducto()}" styleClass="btn btn-white border-secondary bg-white btn-md mb-2 h5 mt-2"/>
+                                    <p:commandButton value="Subastar" icon ="pi pi-sort-amount-up" update="@form" action="#{productoBean.subastarProducto(producto.id)}" styleClass="btn btn-white border-secondary bg-white btn-md mb-2 h5 mt-2"/>
                                 </td>
                             </tr>
                         </p:repeat>

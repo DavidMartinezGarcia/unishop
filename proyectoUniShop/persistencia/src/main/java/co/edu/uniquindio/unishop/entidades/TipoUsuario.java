@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class TipoUsuario {
 
     @OneToMany(mappedBy = "tipoUsuario")
     @ToString.Exclude
+    @JsonIgnore
     private List<Usuario> usuarios;
 
     public TipoUsuario(String nombre) {

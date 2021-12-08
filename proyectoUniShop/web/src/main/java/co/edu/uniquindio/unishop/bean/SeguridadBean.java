@@ -1,8 +1,10 @@
 package co.edu.uniquindio.unishop.bean;
 
 import co.edu.uniquindio.unishop.dto.ProductoCarrito;
+import co.edu.uniquindio.unishop.dto.ProductoUsuario;
 import co.edu.uniquindio.unishop.entidades.*;
 import co.edu.uniquindio.unishop.servicios.CategoriaServicio;
+import co.edu.uniquindio.unishop.servicios.MailService;
 import co.edu.uniquindio.unishop.servicios.ProductoServicio;
 import co.edu.uniquindio.unishop.servicios.UsuarioServicio;
 import lombok.Getter;
@@ -55,9 +57,8 @@ public class SeguridadBean implements Serializable{
     @Getter @Setter
     List<Categoria> categorias;
 
-    @Getter @Setter
-    private String respuesta;
-
+    @Autowired
+    private MailService correoService;
 
     @PostConstruct
     public void inicializar(){
@@ -113,6 +114,7 @@ public class SeguridadBean implements Serializable{
         subtotal-=productosCarrito.get(indice).getPrecio();
         productosCarrito.remove(indice);
     }
+
     public void actualizarSubTotal(){
         subtotal = 0D;
         for(ProductoCarrito producto: productosCarrito){
@@ -123,17 +125,19 @@ public class SeguridadBean implements Serializable{
 
         Producto p = productoServicio.obtenerProducto(codigo);
         Integer cantidadDispnible = p.getUnidadesDisponibles();
-
         return cantidadDispnible;
-
     }
+
     public void comprar(){
         if(usuarioSesion!=null && !productosCarrito.isEmpty()){
             try{
                 System.out.println("METODO DE MIERDA: "+metodoSeleccionado);
-                productoServicio.comprarProductos(usuarioSesion, productosCarrito, MetodoPago.valueOf(MetodoPago.class ,metodoSeleccionado));
+                //MetodoPago.valueOf(MetodoPago.class ,metodoSeleccionado)
+                productoServicio.comprarProductos(usuarioSesion, productosCarrito, MetodoPago.OTRO);
+                enviarEmailProductos();
                 productosCarrito.clear();
                 subtotal = 0D;
+
                 FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Compra realizada con exito");
                 FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
 
@@ -146,6 +150,31 @@ public class SeguridadBean implements Serializable{
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Error al realizar la compra");
             FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
         }
+
+    }
+    public void enviarEmailProductos(){
+
+        try{
+            String detalleCompra = "¡Hola, "+usuarioSesion.getNombre() +
+            "UniShop te informa: \nAcabas de comprar los siguientes artículos en nuestra tienda:\n";
+            String email = usuarioSesion.getEmail();
+
+            for (ProductoCarrito producto: productosCarrito) {
+
+                detalleCompra += "Nombre Producto: "+producto.getNombre()+
+                        "\n\tPrecio: "+producto.getPrecio()*producto.getUnidades()+" \n";
+            }
+            detalleCompra += "\nEl valor total de tu compra fue: "+subtotal;
+            detalleCompra += "¡Disfruta de tus productos!";
+            correoService.sendSimpleMail(new Mail("UwU@gmail.com", email, "Detalle de tu compra", detalleCompra, null, null));
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Mail enviado con exito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } catch (Exception e) {
+
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Mail no enviado");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+
 
     }
     public boolean descontarProducto(Double descuento){
@@ -171,26 +200,6 @@ public class SeguridadBean implements Serializable{
         return centinela;
     }
 
-    public void comentar(Comentario comentario){
-        if(comentario.getRespuesta()==null){
-            comentario.setRespuesta(":");
-        }
-    }
 
-    //probablemente deberia estar en otra parte igual que el metodo "comentar"
-    public void darRespuesta(Comentario comentario){
-        if(respuesta.trim().equals("")){
-            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se puede crear una respuesta vacia");
-            FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
-        }else {
-            comentario.setRespuesta(respuesta.trim());
-            try {
-                //se envia a la base de datos para guardarlo otra vez pero con respuesta
-                productoServicio.comentarProducto(comentario);
-            } catch (Exception e) {
-                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
-                FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
-            }
-        }
-    }
+
 }

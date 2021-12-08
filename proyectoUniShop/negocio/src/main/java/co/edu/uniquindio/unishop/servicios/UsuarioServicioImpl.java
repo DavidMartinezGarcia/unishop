@@ -41,6 +41,7 @@ public class UsuarioServicioImpl implements UsuarioServicio{
 
         Optional<Usuario> buscado = usuarioRepo.findById((u.getCodigo()));
 
+        System.out.println("Servicio: "+ u.getListaFavoritos().size());
         if(buscado.isEmpty()){
             throw new Exception("El usuario no existe");
         }
@@ -103,5 +104,8 @@ public class UsuarioServicioImpl implements UsuarioServicio{
         return usuarioRepo.findByEmailAndCodigo(email, codigo).orElseThrow( () -> new Exception("El usuario no existe"));
     }
 
+    public void agregarFavorito(Producto productoFavorito){
+
+    }
 
 }

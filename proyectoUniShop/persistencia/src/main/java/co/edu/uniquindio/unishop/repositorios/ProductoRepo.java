@@ -56,7 +56,7 @@ public interface ProductoRepo extends JpaRepository<Producto, Integer> {
     boolean borrarProducto(Integer codigoProducto);
 
     //Consulta para obtener los productos que están siendo subastados
-    @Query("select  p from Producto p where p.subasta is not null")
+    @Query("select  p from Producto p where p.subastas is not empty")
     List<Producto> buscarProductosSubastados();
 
 }

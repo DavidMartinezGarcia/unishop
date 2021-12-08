@@ -18,31 +18,33 @@
           <h1 class="display-5 mb-2 text-center"> #{usuarioBean.agregarCompraUsuario(seguridadBean.usuarioSesion.codigo)}Compras</h1>
           <p class="mb-5 text-center">
             <i class="text-info font-weight-bold">#{usuarioBean.listaCompras.size()}</i> Cantidad de Compras </p>
-          <table id="compra_id" class="table table-condensed table-responsive">
-            <thead>
-            <tr>
-              <th style="width:30%">Código Compra</th>
-              <th style="width:30%">Fecha Compra</th>
-              <th style="width:20%">Medio pago</th>
-              <th style="width:20%">Valor Compra</th>
-            </tr>
-            </thead>
-
-            <tbody>
+          <div>
             <p:repeat value="#{usuarioBean.listaCompras}" var="compra" varStatus = "p">
-              <tr style="margin-top: 15px">
-                  <td class="align-middle" style="margin-top: 15px">#{compra.codigo}</td>
-                  <td class="align-middle">#{compra.fechaCompra}</td>
-                  <td class="align-middle">#{compra.metodoPago}</td>
-                  <td class="align-middle">#{compraBean.calcularTotalCompras(compra)}</td>
-              </tr>
+              <div>
+                <p:outputLabel value="#{compra.fechaCompra}" style="margin-top: 10px; margin-left: 30px"/>
+                <p:repeat value="#{compra.detalle}" var="detalle">
+                  <div class="row" style="margin: 25px;  background-color: rgba(220,220,220,0.3 ); border-radius: 16px;">
+                    <div class="col" >
+                      <p:graphicImage value="/uploads/#{detalle.producto.imagenPrincipal}" styleClass="carrito-img" style="margin: 15px"/>
+                    </div>
+                    <div class="col">
+                      <p:outputLabel style="margin-top:40px" value="#{detalle.producto.nombre}"  />
+                    </div>
+                    <div class="col">
+                      <p:outputLabel style="margin:40px">Cantidad: #{detalle.cantidad}</p:outputLabel>
+                    </div>
+                    <div class="col-md-2 column">
+                      <p:commandButton style="margin-top:35px"  value="chatear" icon="bx bx-conversation" type="button" action="#{usuarioBean.agregarChat(detalle.producto.vendedor)}" styleClass="btn btn-white border-secondary bg-white "/>
+                    </div>
+                  </div>
+                </p:repeat>
+              </div>
             </p:repeat>
-            </tbody>
-          </table>
+          </div>
         </h:form>
       </div>
     </div>
-    <div class="text-end">
+    <div class="text-end" >
     </div>
   </ui:define>
 </ui:composition>

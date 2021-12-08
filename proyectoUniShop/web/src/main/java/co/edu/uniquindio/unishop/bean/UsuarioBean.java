@@ -3,13 +3,11 @@ package co.edu.uniquindio.unishop.bean;
 import co.edu.uniquindio.unishop.dto.ProductoUsuario;
 import co.edu.uniquindio.unishop.dto.UsuarioCompra;
 import co.edu.uniquindio.unishop.entidades.*;
-import co.edu.uniquindio.unishop.servicios.CiudadServicio;
-import co.edu.uniquindio.unishop.servicios.CompraServicio;
-import co.edu.uniquindio.unishop.servicios.ProductoServicio;
-import co.edu.uniquindio.unishop.servicios.UsuarioServicio;
+import co.edu.uniquindio.unishop.servicios.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,8 +57,14 @@ public class UsuarioBean implements Serializable {
     @Autowired
     private CompraServicio compraServicio;
 
+    @Autowired
+    private ChatServicio chatServicio;
+
     @Getter @Setter
     private List<UsuarioCompra> listaCompras;
+
+    @Value(value = "#{seguridadBean.usuarioSesion}")
+    private Usuario usuarioSesion;
 
     @PostConstruct
     public void inicializar(){
@@ -112,10 +117,11 @@ public class UsuarioBean implements Serializable {
             List<Producto> productosSubasta = productoServicio.listarProductosSubastados();
             for (Producto producto: productosSubasta) {
                 ProductoUsuario productoUsuario = new ProductoUsuario(producto.getCodigo(),producto.getNombre(),producto.getImagenPrincipal(),producto.getPrecio(),producto.getUnidadesDisponibles());
-                if(!productosUsuario.contains(productoUsuario)){
-                    productosUsuario.add(productoUsuario);
+                if(!productosSubastados.contains(productoUsuario)){
+                    productosSubastados.add(productoUsuario);
                 }
             }
+            System.out.println(productosSubastados.size());
         }catch(Exception e){
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", e.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, fm);
@@ -128,7 +134,7 @@ public class UsuarioBean implements Serializable {
        try {
             List<Compra> listasCompra = compraServicio.listarComprasUsuario(codigoUsuario);
             for(Compra compra: listasCompra){
-                UsuarioCompra compraUsuario =  new UsuarioCompra(compra.getMetodoDePago(), compra.getFecha(), compra.getCodigo());
+                UsuarioCompra compraUsuario =  new UsuarioCompra(compra.getMetodoDePago(), compra.getFecha(), compra.getCodigo(), compra.getDetalleCompras());
 
                     listaCompras.add(compraUsuario);
 
@@ -157,12 +163,26 @@ public class UsuarioBean implements Serializable {
 
 
         }catch(Exception e){
+            e.printStackTrace();
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, fm);
         }
-
-
     }
 
+    public void eliminarFavorito(int indice){
+        try{
+        productosFavoritos.remove(indice);
+        usuarioSesion.getListaFavoritos().remove(indice);
+        usuarioServicio.actualizarUsuario(usuarioSesion);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
+    public void agregarChat(Usuario vendedor){
+        List<Mensaje> lista = new ArrayList<>();
+        Chat chat = new Chat(vendedor,lista);
+        usuarioSesion.getChats().add(chat);
+        chatServicio.guardarChat(chat);
+    }
 }

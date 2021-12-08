@@ -1,6 +1,9 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -26,10 +29,12 @@ public class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "usuario")
     @ToString.Exclude
+    @JsonIgnore
     private List<Compra> compras;
 
     @OneToMany(mappedBy = "usuario")
     @ToString.Exclude
+    @JsonIgnore
     private List<Comentario> comentarios;
 
     @Column(nullable = false, length = 80)
@@ -43,6 +48,7 @@ public class Usuario implements Serializable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false)
+    @JsonIgnore
     private List<String> telefonos;
 
     @OneToMany(mappedBy = "usuario")
@@ -59,14 +65,18 @@ public class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "usuario")
     @ToString.Exclude
+    @JsonIgnore
     private List<Oferta> listaPujas;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     @ToString.Exclude
+    @JsonIgnore
     private List<Producto> listaFavoritos;
 
     @OneToMany(mappedBy = "vendedor")
     @ToString.Exclude
+    @JsonIgnore
     private List<Producto> productos;
 
     public Usuario(Ciudad ciudad, String nombre, String email, List<String> telefonos, String contrasenia, TipoUsuario tipoUsuario) {
@@ -77,6 +87,7 @@ public class Usuario implements Serializable {
         this.telefonos = telefonos;
         this.contrasenia = contrasenia;
         this.tipoUsuario = tipoUsuario;
+        listaFavoritos = new ArrayList<>();
     }
 
     public Usuario(Integer codigo,Ciudad ciudad, String nombre, String email, List<String> telefonos, String contrasenia, TipoUsuario tipoUsuario) {

@@ -92,16 +92,11 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     @Override
     public void comentarProducto(Comentario comentario) throws Exception {
-        //probablemente toca corregirlo para que no actualizar cuando se responde
-        comentario.setFecha(LocalDate.now());
         comentarioRepo.save(comentario);
     }
     @Override
-    public void subastarProducto(Subasta subasta, Producto producto) throws Exception {
-
-        productoRepo.save(producto);
+    public void subastarProducto(Subasta subasta) throws Exception {
         subastaRepo.save(subasta);
-
     }
 
     @Override
@@ -201,5 +196,9 @@ public class ProductoServicioImpl implements ProductoServicio {
     @Override
     public MetodoPago obtenerMetodoPago(String metodoPago) throws Exception {
         return MetodoPago.valueOf(metodoPago);
+    }
+
+    public void agregarFavorito(Producto productoFavorito){
+
     }
 }

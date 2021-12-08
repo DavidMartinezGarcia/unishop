@@ -50,9 +50,6 @@ public class ProductoBean implements Serializable {
     @Getter @Setter
     private List<Ciudad> listaCiudades;
 
-    @Getter @Setter
-    private Subasta nuevaSubasta;
-
     @Value("#{seguridadBean.usuarioSesion}")
     private Usuario usuarioSesion;
 
@@ -60,7 +57,6 @@ public class ProductoBean implements Serializable {
     public void inicializar(){
         producto = new Producto();
         this.imagenes = new ArrayList<>();
-        nuevaSubasta = new Subasta();
         listaCategorias = categoriaServicio.listarCategorias();
         listaCiudades = ciudadServicio.listarCiudades();
     }
@@ -130,16 +126,15 @@ public class ProductoBean implements Serializable {
         return null;
     }
 
-    public void subastarProducto(){
+    public void subastarProducto(Integer codigo){
 
         try{
-            nuevaSubasta.setProducto(producto);
+            Subasta nuevaSubasta = new Subasta();
+            Producto p = productoServicio.obtenerProducto(codigo);
+            nuevaSubasta.setProducto(p);
             nuevaSubasta.setTiempoLimite(3600);
 
-            producto.setSubasta(nuevaSubasta);
-
-            productoServicio.subastarProducto(nuevaSubasta, producto);
-            nuevaSubasta = new Subasta();
+            productoServicio.subastarProducto(nuevaSubasta);
 
         }catch(Exception e){
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());

@@ -9,7 +9,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-//@Service("mailService")
+
+@Service("mailService")
 public class MailServiceImpl implements MailService{
 
     @Autowired
@@ -28,7 +29,7 @@ public class MailServiceImpl implements MailService{
         message.setSentDate(mail.getSendDate());
         try {
             javaMailSender.send(message);
-            System.out.println("Correo electronico enviado con exito");
+
         } catch (MailException e) {
             e.printStackTrace();
             throw new Exception("Error al enviar el correo electronico");

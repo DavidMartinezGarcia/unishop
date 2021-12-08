@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class Subasta implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
-    @OneToOne
+    @ManyToOne
     private Producto producto;
 
     @Column(nullable = false)
@@ -31,6 +32,7 @@ public class Subasta implements Serializable {
 
     @OneToMany(mappedBy = "subasta")
     @ToString.Exclude
+    @JsonIgnore
     private List<Oferta> listaPujas;
 
     public Subasta(Producto producto, Integer tiempoLimite) {

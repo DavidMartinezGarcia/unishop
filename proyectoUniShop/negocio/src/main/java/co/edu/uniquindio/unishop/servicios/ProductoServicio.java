@@ -26,7 +26,7 @@ public interface ProductoServicio {
 
     void comentarProducto(Comentario comentario) throws Exception;
 
-    void subastarProducto(Subasta subasta, Producto producto) throws Exception;
+    void subastarProducto(Subasta subasta) throws Exception;
 
     void eliminarProductoFavorito(Producto producto, Usuario usuario) throws Exception;
 
@@ -45,5 +45,7 @@ public interface ProductoServicio {
     List<String> listarMetodosPago();
 
     MetodoPago obtenerMetodoPago(String metodoPago) throws  Exception;
+
+    void agregarFavorito(Producto productoFavorito);
 
 }

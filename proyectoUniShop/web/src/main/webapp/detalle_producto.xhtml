@@ -29,10 +29,12 @@
 
                     </div>
                     <div class="p-grid">
+
                         <div class="box">
-
-                            <p:commandButton style="alignment: right" rendered="#{seguridadBean.autenticado}" action="#{detalleProductoBean.agregarFavoritos()}" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-flat" />
-
+                            <h:form id="form">
+                            <p:commandButton update="@form" style="alignment: right; font-size: 10px" rendered="#{seguridadBean.autenticado and !detalleProductoBean.isInFavoritos()}" action="#{detalleProductoBean.agregarFavoritos()}" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-outlined" />
+                            <p:commandButton update="@form" style="alignment: right; font-size: 10px" rendered="#{seguridadBean.autenticado and detalleProductoBean.isInFavoritos()}" action="#{detalleProductoBean.eliminarFavorito()}" icon="pi pi-heart" styleClass="rounded-button ui-button-help" />
+                            </h:form>
                             <h1 class="mt-4">#{detalleProductoBean.producto.nombre}</h1>
                             <p:rating value="#{detalleProductoBean.calificacionPromedio}" readonly="true" disabled="true"/>
 
@@ -103,12 +105,12 @@
                                 <p:rating readonly="true" value="#{comentario.puntuacion}" />
                                 <div jsf:rendered="#{seguridadBean.puedeResponder(comentario.producto)}" >
                                     <h:form>
-                                        <p:commandButton value="Responder" update="@form" icon="pi pi-reply" rendered="#{comentario.respuesta == null}" iconPos="right" style="margin: 15px" styleClass="mt-4" action="#{seguridadBean.comentar(comentario)}"/>
+                                        <p:commandButton value="Responder" update="@form" icon="pi pi-reply" rendered="#{comentario.respuesta == null}" iconPos="right" style="margin: 15px" styleClass="mt-4" action="#{detalleProductoBean.abrirResponder(comentario)}"/>
                                         <p:panelGrid columns="1" cellpadding="3" rendered="#{comentario.respuesta.equals(':')}">
-                                            <p:inputTextarea value="#{seguridadBean.respuesta}" required="true" styleClass="comentario-usuario" />
-                                            <p:commandButton value="Responder" icon="pi pi-reply" iconPos="right" style="margin: 15px" styleClass="mt-4" update="@form" action="#{seguridadBean.darRespuesta(comentario)}"/>
+                                            <p:inputTextarea value="#{detalleProductoBean.respuesta}" required="true" styleClass="comentario-usuario" />
+                                            <p:commandButton value="Responder" icon="pi pi-reply" iconPos="right" style="margin: 15px" styleClass="mt-4" update="@form" action="#{detalleProductoBean.darRespuesta(comentario)}"/>
                                         </p:panelGrid>
-                                        <p:outputLabel rendered="#{!comentario.respuesta.equals(':') or comentario.respuesta!=null}">#{comentario.respuesta}</p:outputLabel>
+                                        <p:outputLabel rendered="#{!comentario.respuesta.equals(':') or comentario.respuesta!=null}" style="margin: 15px">#{comentario.respuesta}</p:outputLabel>
                                     </h:form>
                                 </div>
                             </div>

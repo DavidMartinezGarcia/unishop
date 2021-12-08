@@ -25,5 +25,4 @@ public interface UsuarioServicio {
     Usuario iniciarSesion(String email, String password) throws Exception;
 
     Usuario recuperarContrasenia(String email, Integer codigo) throws  Exception;
-
 }

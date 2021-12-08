@@ -270,3 +270,7 @@
 .dropdown-menu li:hover{
     background-color: rgba(13,137,236,0.5);
 }
+
+#heart-button2 .ui-icon, #heart-button1 .ui-icon{
+    font-size: 30px;
+}

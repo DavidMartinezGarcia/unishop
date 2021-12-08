@@ -1,6 +1,9 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -16,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
 public class Producto implements Serializable {
 
     @Id
@@ -26,6 +30,7 @@ public class Producto implements Serializable {
 
     @ElementCollection()
     @ToString.Exclude
+    @JsonIgnore
     private List<String> imagenes;
 
     @Column(nullable = false, length = 100)
@@ -54,6 +59,7 @@ public class Producto implements Serializable {
 
     @OneToMany(mappedBy = "producto")
     @ToString.Exclude
+    @JsonIgnore
     private List<Comentario> comentarios;
 
     @Column(nullable = false)
@@ -63,17 +69,23 @@ public class Producto implements Serializable {
 
     @OneToMany(mappedBy = "compra")
     @ToString.Exclude
+    @JsonIgnore
     private List<DetalleCompra> detalleCompras;
 
-    @OneToOne(mappedBy = "producto")
-    private Subasta subasta;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "producto")
+    @JsonIgnore
+    private List<Subasta> subastas;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(mappedBy = "listaFavoritos")
     @ToString.Exclude
+    @JsonIgnore
     private List<Usuario> listaUsuarios;
 
     @ManyToMany
     @ToString.Exclude
+    @JsonIgnore
     private List<Categoria> listaCategorias;
 
     public Producto(String nombre, String descripcion, Double precio, Integer unidadesDisponibles, Ciudad ciudad, Integer descuento, LocalDate fechaLimite, Usuario vendedor, List<Categoria> categorias){
