@@ -1,9 +1,6 @@
 package co.edu.uniquindio.unishop.bean;
 
-import co.edu.uniquindio.unishop.entidades.Categoria;
-import co.edu.uniquindio.unishop.entidades.Ciudad;
-import co.edu.uniquindio.unishop.entidades.Producto;
-import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.entidades.*;
 import co.edu.uniquindio.unishop.servicios.CategoriaServicio;
 import co.edu.uniquindio.unishop.servicios.CiudadServicio;
 import co.edu.uniquindio.unishop.servicios.ProductoServicio;
@@ -34,6 +31,7 @@ import java.util.List;
 @ViewScoped
 @Component
 public class ProductoBean implements Serializable {
+
     @Getter @Setter
     private Producto producto;
 
@@ -52,6 +50,9 @@ public class ProductoBean implements Serializable {
     @Getter @Setter
     private List<Ciudad> listaCiudades;
 
+    @Getter @Setter
+    private Subasta nuevaSubasta;
+
     @Value("#{seguridadBean.usuarioSesion}")
     private Usuario usuarioSesion;
 
@@ -59,6 +60,7 @@ public class ProductoBean implements Serializable {
     public void inicializar(){
         producto = new Producto();
         this.imagenes = new ArrayList<>();
+        nuevaSubasta = new Subasta();
         listaCategorias = categoriaServicio.listarCategorias();
         listaCiudades = ciudadServicio.listarCiudades();
     }
@@ -114,17 +116,36 @@ public class ProductoBean implements Serializable {
         return null;
     }
 
-    public void eliminarProducto(Integer codigo){
+    public String eliminarProducto(Integer codigo){
         try {
-            System.out.println("Eliminar producto");
             productoServicio.eliminarProducto(codigo);
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Producto eliminado con exito");
             FacesContext.getCurrentInstance().addMessage("mis-productos", fm);
+            return "/usuario/mis_productos?faces-redirect=true";
         } catch (Exception e) {
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
             FacesContext.getCurrentInstance().addMessage("mis-productos", fm);
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public void subastarProducto(){
+
+        try{
+            nuevaSubasta.setProducto(producto);
+            nuevaSubasta.setTiempoLimite(3600);
+
+            producto.setSubasta(nuevaSubasta);
+
+            productoServicio.subastarProducto(nuevaSubasta, producto);
+            nuevaSubasta = new Subasta();
+
+        }catch(Exception e){
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+
     }
 
 }

@@ -65,10 +65,10 @@ public class Producto implements Serializable {
     @ToString.Exclude
     private List<DetalleCompra> detalleCompras;
 
-    @OneToOne
+    @OneToOne(mappedBy = "producto")
     private Subasta subasta;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "listaFavoritos")
     @ToString.Exclude
     private List<Usuario> listaUsuarios;
 
@@ -87,6 +87,7 @@ public class Producto implements Serializable {
         this.fechaLimite = fechaLimite;
         this.vendedor = vendedor;
         this.listaCategorias = categorias;
+        listaUsuarios = new ArrayList<>();
 
     }
 

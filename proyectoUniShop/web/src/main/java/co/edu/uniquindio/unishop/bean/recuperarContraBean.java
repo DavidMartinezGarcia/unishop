@@ -37,11 +37,11 @@ public class recuperarContraBean implements Serializable {
                 String password = usuario.getContrasenia();
                 String mensaje = "UniShop te informa\n Tu contraseña es: "+password+"\nRecuerda que tu contraseña es privada y no debe ser compartida";
 
-                System.out.println("ABC: "+correoServicio);
+
 
                 correoServicio.sendMail(correo, "Recuperacion de contraseña", mensaje);
 
-                System.out.println("ABC2: "+correoServicio);
+
 
                 FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Mail enviado con exito");
                 FacesContext.getCurrentInstance().addMessage(null, msg);

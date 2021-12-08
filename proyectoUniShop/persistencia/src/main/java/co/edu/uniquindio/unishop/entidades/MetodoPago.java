@@ -1,6 +1,8 @@
 package co.edu.uniquindio.unishop.entidades;
 
-public enum MetodoPago {
+import java.io.Serializable;
+
+public enum MetodoPago implements Serializable {
     VISA,
     MASTERCARD,
     MERCADOPAGO,

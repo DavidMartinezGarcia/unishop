@@ -38,10 +38,11 @@
                 <ul class="nav me-auto" style="margin-top: 10px">
                     <li class="nav-item"><a href="/index.xhtml" class="nav-link link-dark px-1"><i class='bx bx-home'/><br/>Inicio</a></li>
                     <li class="nav-item"><a href="/descuentos.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bxs-offer'/><br/>Descuentos</a></li>
+
                     <h:form>
                         <li class="nav-item">
                             <i class='bx bx-purchase-tag' style="font-size: 30px"/>
-                            <button class="dropdown-toggle btn btn btn-outline-light" style="color: black" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="dropdown-toggle btn btn btn-outline-light" style="color: black; margin-top: 4px" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 Categorias
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -53,11 +54,12 @@
                     <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/crear_producto.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-add-to-queue'/><br/>Crear Producto</a> </li>
                     <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/mis_compras.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-shopping-bag'/><br/>Mis compras</a></li>
                     <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/mis_productos.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-receipt'/><br/>Mis productos</a></li>
-                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/favoritos.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-star'></i><br/>Favoritos</a></li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/favoritos.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-star'/><br/>Favoritos</a></li>
                     <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/carrito.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-cart'/><br/>Carrito</a></li>
+                    <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/subastas.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-medal'/><br/>Subastas</a></li>
                 </ul>
                 <div class="text-end">
-                    <h:form action="" rendered="#{!seguridadBean.autenticado}">
+                    <h:form action="" rendered="#{!seguridadBean.autenticado}" style="margin-top: 20px">
                         <p:commandButton styleClass="btn btn-primary me-1" value="Ingresa" onclick="PF('login').show()" icon="pi pi-sign-in"/>
                         <p:commandButton styleClass="btn btn-primary"  value="Registrate" action="registrar_usuario.xhtml?faces-redirect=true" icon="pi pi-user-plus"/>
                     </h:form>

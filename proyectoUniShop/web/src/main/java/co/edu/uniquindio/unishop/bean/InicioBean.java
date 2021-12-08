@@ -29,7 +29,6 @@ public class InicioBean implements Serializable {
 
     @PostConstruct
     public void inicializar(){
-
         try {
             this.productos = productoServicio.listarTodosLosProductos();
         } catch (Exception e) {

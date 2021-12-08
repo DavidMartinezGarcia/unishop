@@ -13,7 +13,9 @@ import java.time.LocalDate;
 public class UsuarioCompra {
 
     @EqualsAndHashCode.Include
+
     private MetodoPago metodoPago;
     private LocalDate fechaCompra;
+    private Integer codigo;
 
 }

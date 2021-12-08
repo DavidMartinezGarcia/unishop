@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-
 public class Categoria {
 
     @Id

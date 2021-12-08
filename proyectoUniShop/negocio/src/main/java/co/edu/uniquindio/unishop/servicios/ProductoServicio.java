@@ -14,13 +14,19 @@ public interface ProductoServicio {
 
     void eliminarProducto(Integer codigo) throws Exception;
 
+    void borrarProducto(Integer codigo) throws Exception;
+
     Producto obtenerProducto(Integer codigo) throws Exception;
 
     List<Producto> listarProductosCategoria(Categoria categoria);
 
     List<Producto> listarTodosLosProductos() throws Exception;
 
+    List<Producto> listarProductosSubastados() throws Exception;
+
     void comentarProducto(Comentario comentario) throws Exception;
+
+    void subastarProducto(Subasta subasta, Producto producto) throws Exception;
 
     void eliminarProductoFavorito(Producto producto, Usuario usuario) throws Exception;
 
@@ -36,7 +42,8 @@ public interface ProductoServicio {
 
     List<Producto> buscarProductosDescuento() throws Exception;
 
-    List<Producto> buscarProductosSubastados() throws Exception;
+    List<String> listarMetodosPago();
 
+    MetodoPago obtenerMetodoPago(String metodoPago) throws  Exception;
 
 }

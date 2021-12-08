@@ -46,9 +46,11 @@ public class ComentarioTest {
 
         LocalDate fecha = LocalDate.of(2022, 5 , 15);
 
-        Usuario usuario = new Usuario(ciudad, "Santiago perez", "sp05@gamiil.com", telefonos, "sp12345", tipoUsuario);
-        Producto producto = new Producto("Alcachofas", "Se come bien rico", 12000.0, 20, ciudad, 0, fecha, usuario, null);
+        Usuario usuario = new Usuario(ciudad, "Santiago pereza", "sp055@gamiil.com", telefonos, "sp123456", tipoUsuario);
+        Producto producto = new Producto("Alcachofasa", "Se come bien rico", 12000.0, 20, ciudad, 0, fecha, usuario, null);
         Comentario comentario = new Comentario(producto, usuario, "Esta bonito",5, LocalDate.now());
+
+        comentario.setRespuesta("Si está bonito pero está muy caro");
 
         comentarioRepo.save(comentario);
         Assertions.assertNotNull(comentarioRepo.findById(1));

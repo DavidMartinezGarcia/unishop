@@ -68,10 +68,8 @@ public class BusquedaBean implements Serializable {
     }
 
     public String buscarCategoria(Categoria categoria){
-        System.out.println("Entra");
         this.categoriaBuscada = categoria;
         if(!categoriaBuscada.equals(null)){
-            System.out.println("Entra if magico");
             return "resultado_busqueda?faces-redirect=true&amp;categoria="+categoriaBuscada.getCodigoCategoria();
         }
         else{

@@ -33,16 +33,19 @@
                                 <h:panelGrid columns="2" cellpadding="5">
                                     <h:outputText value="Nombre:" />
                                     <h:outputText value="#{producto.nombre}" style="font-weight: bold" />
+                                    <h:outputText value="Descuento:" rendered="#{producto.getDescuento()>0}"/>
+                                    <h:outputText value="#{producto.descuento}% OFF" rendered="#{producto.getDescuento()>0}"/>
                                     <h:outputText value="Precio:" />
-                                    <h:outputText value="$#{producto.precio}" />
+                                    <h:outputText value="$#{producto.calcularPrecioDescuento()}" /><h:outputText value="" />
+                                    <h:outputText value="$#{producto.precio}" style="text-decoration:line-through; font-size: 12px; margin-top: -10px" rendered="#{producto.getDescuento()>0}"/>
+                                    <h:outputLabel rendered="#{producto.getDescuento()==0}"/>
                                     <h:outputText value="Categorías:" />
-
-                                    <h:outputText  value="#{producto.mostrarCategorias()}"/>
+                                    <h:outputText value="#{producto.mostrarCategorias()}"/>
                                 </h:panelGrid>
                             </p:outputPanel>
                         </div>
                         <div class="col-lg-2 col-md-1 align-self-center" >
-                            <p:commandButton value="Ver detalle" styleClass="ui-button-raised rounded-button" icon="pi pi-arrow-right" iconPos="right" action="#{inicioBean.irADetalle(producto.codigo)}" />
+                            <p:commandButton value="Ver detalle" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" action="#{inicioBean.irADetalle(producto.codigo)}" />
                         </div>
                     </div>
                 </p:dataViewListItem>

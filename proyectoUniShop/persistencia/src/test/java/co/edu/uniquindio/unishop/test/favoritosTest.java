@@ -17,7 +17,7 @@ import java.util.List;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class FavoritosTest {
+class FavoritosTest {
 
     @Autowired
     private UsuarioRepo usuarioRepo;

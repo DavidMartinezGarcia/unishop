@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubastaRepo extends JpaRepository<Subasta, Integer> {
+
+
 }

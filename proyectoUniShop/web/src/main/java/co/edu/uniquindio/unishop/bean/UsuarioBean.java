@@ -2,10 +2,7 @@ package co.edu.uniquindio.unishop.bean;
 
 import co.edu.uniquindio.unishop.dto.ProductoUsuario;
 import co.edu.uniquindio.unishop.dto.UsuarioCompra;
-import co.edu.uniquindio.unishop.entidades.Ciudad;
-import co.edu.uniquindio.unishop.entidades.Compra;
-import co.edu.uniquindio.unishop.entidades.Producto;
-import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.entidades.*;
 import co.edu.uniquindio.unishop.servicios.CiudadServicio;
 import co.edu.uniquindio.unishop.servicios.CompraServicio;
 import co.edu.uniquindio.unishop.servicios.ProductoServicio;
@@ -55,6 +52,9 @@ public class UsuarioBean implements Serializable {
     @Getter @Setter
     private List<ProductoUsuario> productosFavoritos;
 
+    @Getter @Setter
+    private List<ProductoUsuario> productosSubastados;
+
     @Autowired
     private CompraServicio compraServicio;
 
@@ -67,6 +67,7 @@ public class UsuarioBean implements Serializable {
         listaCiudades = ciudadServicio.listarCiudades();
         productosUsuario = new ArrayList<ProductoUsuario>();
         productosFavoritos = new ArrayList<ProductoUsuario>();
+        productosSubastados = new ArrayList<ProductoUsuario>();
         listaCompras = new ArrayList<UsuarioCompra>();
     }
 
@@ -105,13 +106,30 @@ public class UsuarioBean implements Serializable {
         }
 
     }
+    public void agregarProductosSubastados(){
+
+        try{
+            List<Producto> productosSubasta = productoServicio.listarProductosSubastados();
+            for (Producto producto: productosSubasta) {
+                ProductoUsuario productoUsuario = new ProductoUsuario(producto.getCodigo(),producto.getNombre(),producto.getImagenPrincipal(),producto.getPrecio(),producto.getUnidadesDisponibles());
+                if(!productosUsuario.contains(productoUsuario)){
+                    productosUsuario.add(productoUsuario);
+                }
+            }
+        }catch(Exception e){
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, fm);
+        }
+
+    }
 
     public void agregarCompraUsuario(Integer codigoUsuario){
 
        try {
             List<Compra> listasCompra = compraServicio.listarComprasUsuario(codigoUsuario);
             for(Compra compra: listasCompra){
-                UsuarioCompra compraUsuario =  new UsuarioCompra(compra.getMetodoDePago(), compra.getFecha());
+                UsuarioCompra compraUsuario =  new UsuarioCompra(compra.getMetodoDePago(), compra.getFecha(), compra.getCodigo());
+
                     listaCompras.add(compraUsuario);
 
             }
@@ -132,9 +150,9 @@ public class UsuarioBean implements Serializable {
             List<Producto> productosVendedor = usuarioServicio.obtenerFavoritos(codigo);
             for (Producto producto: productosVendedor) {
                 ProductoUsuario productoUsuario = new ProductoUsuario(producto.getCodigo(),producto.getNombre(),producto.getImagenPrincipal(),producto.getPrecio(),producto.getUnidadesDisponibles());
-
-                        productosFavoritos.add(productoUsuario);
-
+                if(!productosFavoritos.contains(productoUsuario)){
+                    productosFavoritos.add(productoUsuario);
+                }
             }
 
 
@@ -145,4 +163,6 @@ public class UsuarioBean implements Serializable {
 
 
     }
+
+
 }

@@ -6,7 +6,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
 <ui:composition template="WEB-INF/template.xhtml">
     <ui:define name="title">Detalle de producto</ui:define>
     <ui:define name="content">
@@ -42,12 +44,31 @@
                                 <p:commandButton value="Añadir al carrito" icon="pi pi-shopping-cart" update="@form" action="#{seguridadBean.agregarAlCarrito(detalleProductoBean.producto.codigo, detalleProductoBean.producto.precio, detalleProductoBean.producto.nombre, detalleProductoBean.producto.imagenPrincipal)}" />
                                 <p:growl for="add-cart" showDetail="true" />
                             </h:form>
+
+                            <script async="true" defer="true" crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&amp;version=v12.0&amp;appId=1317684645411177&amp;autoLogAppEvents=1" nonce="lohyFvM0"></script>
+                            <script src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            <div class="btn-redes" style="margin-top: 10px">
+
+                                <div class="fb-share-button"
+                                     data-href="https://enlinea.uniquindio.edu.co/enlinea/#!/public-access"
+                                     data-layout="button" data-size="small">
+                                    Facebook
+                                </div>
+
+                                <div style="margin-top: 5px">
+                                    <a  href="https://twitter.com/intent/tweet?button_hashtag=UniShop?"
+                                        class="twitter-hashtag-button"
+                                        data-text="Mira el producto que están vendiendo en UniShop. #{detalleProductoBean.producto.nombre} Por solo: #{detalleProductoBean.producto.calcularPrecioDescuento()} ¡Cómpralo antes de que se agoten!  http://localhost:8080/detalle_producto.xhtml?producto=#{detalleProductoBean.producto.codigo}"
+                                        data-show-count="false">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         <div class="box">
                             <p>Ciudad: #{detalleProductoBean.producto.ubicacion.nombre}</p>
                         </div>
 
-                        <p:dataList emptyMessage="No hay cayegorías para este producto" styleClass="lista-carac" value="#{detalleProductoBean.producto.mostrarCategorias()}" var="categoria">
+                        <p:dataList emptyMessage="No hay categorías para este producto" styleClass="lista-carac" value="#{detalleProductoBean.producto.mostrarCategorias()}" var="categoria">
                             <f:facet name="header">Categoría</f:facet>
                             <p>#{categoria}</p>
                         </p:dataList>
@@ -80,6 +101,16 @@
                                 <p class="meta">#{comentario.fecha} <a href="#">#{comentario.usuario.nombre}</a> dijo: <i class="pull-right" style="visibility: hidden"><a href="#"><small>Reply</small></a></i></p>
                                 <p>#{comentario.comentario}</p>
                                 <p:rating readonly="true" value="#{comentario.puntuacion}" />
+                                <div jsf:rendered="#{seguridadBean.puedeResponder(comentario.producto)}" >
+                                    <h:form>
+                                        <p:commandButton value="Responder" update="@form" icon="pi pi-reply" rendered="#{comentario.respuesta == null}" iconPos="right" style="margin: 15px" styleClass="mt-4" action="#{seguridadBean.comentar(comentario)}"/>
+                                        <p:panelGrid columns="1" cellpadding="3" rendered="#{comentario.respuesta.equals(':')}">
+                                            <p:inputTextarea value="#{seguridadBean.respuesta}" required="true" styleClass="comentario-usuario" />
+                                            <p:commandButton value="Responder" icon="pi pi-reply" iconPos="right" style="margin: 15px" styleClass="mt-4" update="@form" action="#{seguridadBean.darRespuesta(comentario)}"/>
+                                        </p:panelGrid>
+                                        <p:outputLabel rendered="#{!comentario.respuesta.equals(':') or comentario.respuesta!=null}">#{comentario.respuesta}</p:outputLabel>
+                                    </h:form>
+                                </div>
                             </div>
                         </li>
                     </p:dataList>

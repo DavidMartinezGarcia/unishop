@@ -38,26 +38,30 @@ public class CompraBean implements Serializable {
     @PostConstruct
     public void inicializar(){
 
+            this.listaCompras = new ArrayList<>();
             this.listaProductosCompra = new ArrayList<>();
     }
 
     public void agregarDetalleUsuario(Integer codigoCompra){
-
         try {
             List<Producto> listaProductosCompras = compraServicio.listarProductosCompra(codigoCompra);
              for(Producto producto: listaProductosCompras){
-
                     ProductoCarrito productoCompra = new ProductoCarrito(producto.getCodigo(), producto.getNombre(),
                             producto.getImagenPrincipal(), producto.getPrecio(), producto.getUnidadesDisponibles());
-
                     listaProductosCompra.add(productoCompra);
-                 System.out.println(listaProductosCompra.size()+"e");
-
              }
         } catch (Exception e) {
-
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, fm);
         }
+    }
+
+    public double calcularTotalCompras(UsuarioCompra compra) throws Exception{
+        Double total = 0D;
+        Compra compraT = compraServicio.obtenerCompraId(compra.getCodigo());
+        for(DetalleCompra detalle:compraT.getDetalleCompras()){
+            total += detalle.getProducto().getPrecio()*detalle.getCantidad();
+        }
+        return total;
     }
 }

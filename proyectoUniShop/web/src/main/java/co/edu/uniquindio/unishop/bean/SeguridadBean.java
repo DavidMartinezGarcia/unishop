@@ -1,10 +1,7 @@
 package co.edu.uniquindio.unishop.bean;
 
 import co.edu.uniquindio.unishop.dto.ProductoCarrito;
-import co.edu.uniquindio.unishop.entidades.Categoria;
-import co.edu.uniquindio.unishop.entidades.MetodoPago;
-import co.edu.uniquindio.unishop.entidades.Producto;
-import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.entidades.*;
 import co.edu.uniquindio.unishop.servicios.CategoriaServicio;
 import co.edu.uniquindio.unishop.servicios.ProductoServicio;
 import co.edu.uniquindio.unishop.servicios.UsuarioServicio;
@@ -47,23 +44,26 @@ public class SeguridadBean implements Serializable{
     private ArrayList<ProductoCarrito> productosCarrito;
 
     @Getter @Setter
-    private MetodoPago metodosDePago[];
+    private List<String> metodosDePago;
 
     @Getter @Setter
     private Double subtotal;
 
     @Getter @Setter
-    private MetodoPago metodoPago;
+    private String metodoSeleccionado;
 
     @Getter @Setter
     List<Categoria> categorias;
+
+    @Getter @Setter
+    private String respuesta;
 
 
     @PostConstruct
     public void inicializar(){
         this.subtotal = 0D;
         this.productosCarrito = new ArrayList<>();
-        this.metodosDePago = MetodoPago.values();
+        metodosDePago = productoServicio.listarMetodosPago();
         this.categorias = categoriaServicio.listarCategorias();
     }
     public String cerrarSesion(){
@@ -71,10 +71,6 @@ public class SeguridadBean implements Serializable{
         return "/index?faces-redirect=true";
     }
 
-    public String closeSesion(){
-        System.out.println("Hola");
-        return null;
-    }
     public String iniciarSesion() {
 
         if (!email.isEmpty() && !password.isEmpty()) {
@@ -93,27 +89,30 @@ public class SeguridadBean implements Serializable{
         return null;
     }
 
-    public void agregarAlCarrito(Integer id, Double precio, String nombre, String imagen){
-        ProductoCarrito productoCarrito = new ProductoCarrito(id, nombre, imagen, precio, 1);
-        if(!productosCarrito.contains(productoCarrito)){
-            productosCarrito.add(productoCarrito);
-            subtotal += precio;
-
-            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Producto agregado al carrito");
-            FacesContext.getCurrentInstance().addMessage("add-cart", fm);
+    public void agregarAlCarrito(Integer id, Double precio, String nombre, String imagen) throws Exception{
+        Producto productoTemp = productoServicio.obtenerProducto(id);
+        Double precioDescuento = precio - (precio*productoTemp.getDescuento()/100);
+        ProductoCarrito productoCarrito = new ProductoCarrito(id, nombre, imagen, precioDescuento, 1);
+        if(productoTemp.getUnidadesDisponibles()!=0) {
+            if (!productosCarrito.contains(productoCarrito)) {
+                productosCarrito.add(productoCarrito);
+                subtotal += precioDescuento;
+                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Producto agregado al carrito");
+                FacesContext.getCurrentInstance().addMessage("add-cart", fm);
+            } else {
+                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "El producto ya se encuentra en el carrito");
+                FacesContext.getCurrentInstance().addMessage("add-cart", fm);
+            }
         }else{
-            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "El producto ya se encuentra en el carrito");
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No existe disponibilidad de este producto");
             FacesContext.getCurrentInstance().addMessage("add-cart", fm);
         }
-
     }
 
     public void eliminarDelCarrito(int indice){
         subtotal-=productosCarrito.get(indice).getPrecio();
         productosCarrito.remove(indice);
     }
-
-
     public void actualizarSubTotal(){
         subtotal = 0D;
         for(ProductoCarrito producto: productosCarrito){
@@ -129,23 +128,23 @@ public class SeguridadBean implements Serializable{
 
     }
     public void comprar(){
-
-        if(usuarioSesion!=null && !productosCarrito.isEmpty() && metodoPago!=null){
+        if(usuarioSesion!=null && !productosCarrito.isEmpty()){
             try{
-                //MetodoPago metodo = MetodoPago.valueOf(metodoPago);
-                System.out.println("Seguridad Bean metodoPago: "+metodoPago);
-
-                productoServicio.comprarProductos(usuarioSesion, productosCarrito, metodoPago);
+                System.out.println("METODO DE MIERDA: "+metodoSeleccionado);
+                productoServicio.comprarProductos(usuarioSesion, productosCarrito, MetodoPago.valueOf(MetodoPago.class ,metodoSeleccionado));
                 productosCarrito.clear();
                 subtotal = 0D;
                 FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Compra realizada con exito");
                 FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
 
             }catch(Exception e){
-                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", e.getMessage());
+                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "El producto ya se encuentra en el carrito");
+                e.printStackTrace();
                 FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
             }
-
+        }else{
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Error al realizar la compra");
+            FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
         }
 
     }
@@ -164,4 +163,34 @@ public class SeguridadBean implements Serializable{
         return "/recuperar_contrasenia?faces-redirect=true";
     }
 
+    public boolean puedeResponder(Producto producto){
+        boolean centinela = false;
+        if(producto.getVendedor().equals(usuarioSesion)){
+            centinela = true;
+        }
+        return centinela;
+    }
+
+    public void comentar(Comentario comentario){
+        if(comentario.getRespuesta()==null){
+            comentario.setRespuesta(":");
+        }
+    }
+
+    //probablemente deberia estar en otra parte igual que el metodo "comentar"
+    public void darRespuesta(Comentario comentario){
+        if(respuesta.trim().equals("")){
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se puede crear una respuesta vacia");
+            FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
+        }else {
+            comentario.setRespuesta(respuesta.trim());
+            try {
+                //se envia a la base de datos para guardarlo otra vez pero con respuesta
+                productoServicio.comentarProducto(comentario);
+            } catch (Exception e) {
+                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
+                FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
+            }
+        }
+    }
 }

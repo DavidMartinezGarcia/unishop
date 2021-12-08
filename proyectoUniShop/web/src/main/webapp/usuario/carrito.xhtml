@@ -63,11 +63,14 @@
         </div>
         <div class="text-end">
             <div class="p-field p-col-12 p-md-4">
-                <p:outputLabel value="Metodo de pago" for="metodo_pago"/>
-                <p:selectOneMenu id="metodo_pago" value="#{seguridadBean.metodoPago}">
-                    <f:selectItem itemLabel="Seleccione un metodo de pago" noSelectionOption="true" />
-                    <f:selectItems value="#{seguridadBean.metodosDePago}" var="metodo" itemLabel="#{metodo}"/>
-                </p:selectOneMenu>
+
+                <p:outputLabel style="margin: 25px;" value="Metodo de pago"/>
+                <h:selectOneMenu  id="metodoPago" value="#{seguridadBean.metodoSeleccionado}" style="margin-bottom: 10px">
+                    <f:selectItem itemLabel="Seleccione un metodo de pago" noSelectionOption="true"/>
+                    <f:selectItems value="#{seguridadBean.metodosDePago}" var="metodo"/>
+
+                </h:selectOneMenu>
+         
             </div>
             <div class="col-sm-6 order-md-2 text-right">
                 <h:form styleClass="text-end">

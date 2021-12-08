@@ -1,7 +1,6 @@
 package co.edu.uniquindio.unishop.entidades;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -62,7 +61,7 @@ public class Usuario implements Serializable {
     @ToString.Exclude
     private List<Oferta> listaPujas;
 
-    @ManyToMany(mappedBy = "listaUsuarios")
+    @ManyToMany
     @ToString.Exclude
     private List<Producto> listaFavoritos;
 

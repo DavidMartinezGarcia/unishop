@@ -21,48 +21,20 @@
           <table id="compra_id" class="table table-condensed table-responsive">
             <thead>
             <tr>
-              <th style="width:60%">Compra</th>
-              <th style="width:12%">Fecha Compra</th>
-              <th style="width:10%">Medio pago</th>
+              <th style="width:30%">Código Compra</th>
+              <th style="width:30%">Fecha Compra</th>
+              <th style="width:20%">Medio pago</th>
+              <th style="width:20%">Valor Compra</th>
             </tr>
             </thead>
 
             <tbody>
             <p:repeat value="#{usuarioBean.listaCompras}" var="compra" varStatus = "p">
-              <tr>
-                <td>
-                  <div class="row">
-                    <div class="col-md-2 text-left">
-                      <table id="ProductoCompra" class ="table table-condensed table-responsive">
-                        <thead>
-                        <tr>
-                          <th style="width: 50%">#{compraBean.agregarDetalleUsuario(seguridadBean.usuarioSesion.codigo)}</th>
-                          <th style="width:50%">Producto</th>
-                          <th style="width:12%">Precio</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <h1 class="display-6 mb-2 text-center"> #{compraBean.listaProductosCompra.size()}Producto</h1>
-                        <p:repeat value="#{compraBean.listaProductosCompra}" var="productos" varStatus="p">
-                          <tr>
-                            <td>
-                              <div class="row">
-                                <div class="col-md-2 text-left">
-                                  <p:graphicImage class="card-img-top" value="/uploads/#{productos.imagen}" styleClass="carrito-img"></p:graphicImage>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="align-middle">$#{productos.nombre}</td>
-                            <td class="align-middle">$#{productos.precio}</td>
-                          </tr>
-                        </p:repeat>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </td>
-                <td class="align-middle">#{compra.fechaCompra}</td>
-                <td class="align-middle">#{compra.metodoPago}</td>
+              <tr style="margin-top: 15px">
+                  <td class="align-middle" style="margin-top: 15px">#{compra.codigo}</td>
+                  <td class="align-middle">#{compra.fechaCompra}</td>
+                  <td class="align-middle">#{compra.metodoPago}</td>
+                  <td class="align-middle">#{compraBean.calcularTotalCompras(compra)}</td>
               </tr>
             </p:repeat>
             </tbody>

@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.test;
 
+import co.edu.uniquindio.unishop.entidades.Ciudad;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Subasta;
 import co.edu.uniquindio.unishop.entidades.Usuario;
@@ -31,10 +32,13 @@ public class SubastaTest {
     @Sql("classpath:usuarioPrueba.sql")
     public void registrarTest(){
         Date fechaLimite = new Date(2022, 5, 15);
-        Usuario vendedor = usuarioRepo.findById(1).orElse(null);
-        //Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, Ciudad.BELLO, 0, fechaLimite, vendedor);
-       // Subasta subasta = new Subasta(producto, 2);
-        //subastaRepo.save(subasta);
+        Usuario vendedor = usuarioRepo.findById(1006290156).orElse(null);
+
+
+        Ciudad ciudad = new Ciudad();
+        Producto producto = new Producto("Harina de maíz", "Harina de maíz especial para hacer arepas", 4500.0, 30, ciudad, 0, null, null, null);
+        Subasta subasta = new Subasta(producto, 2);
+        subastaRepo.save(subasta);
         Assertions.assertNotNull(subastaRepo.findById(1));
     }
 

@@ -52,8 +52,11 @@ public interface ProductoRepo extends JpaRepository<Producto, Integer> {
     @Query("select p from Producto p where p.vendedor.codigo = :codigoUsuario")
     List<Producto> buscarProductosVendedor(Integer codigoUsuario);
 
-    //Consulta que obtiene todos los productos que están en subasta
-    @Query("select p from Producto p where p.subasta is not null")
+    @Query("DELETE from Producto where codigo=:codigoProducto")
+    boolean borrarProducto(Integer codigoProducto);
+
+    //Consulta para obtener los productos que están siendo subastados
+    @Query("select  p from Producto p where p.subasta is not null")
     List<Producto> buscarProductosSubastados();
 
 }

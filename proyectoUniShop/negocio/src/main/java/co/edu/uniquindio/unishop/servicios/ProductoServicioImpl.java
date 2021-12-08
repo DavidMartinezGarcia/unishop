@@ -3,16 +3,15 @@ package co.edu.uniquindio.unishop.servicios;
 
 import co.edu.uniquindio.unishop.dto.ProductoCarrito;
 import co.edu.uniquindio.unishop.entidades.*;
-import co.edu.uniquindio.unishop.repositorios.ComentarioRepo;
-import co.edu.uniquindio.unishop.repositorios.CompraRepo;
-import co.edu.uniquindio.unishop.repositorios.DetalleCompraRepo;
-import co.edu.uniquindio.unishop.repositorios.ProductoRepo;
+import co.edu.uniquindio.unishop.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +29,10 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     @Autowired
     private CompraRepo compraRepo;
+
+    @Autowired
+    private SubastaRepo subastaRepo;
+
 
     @Override
     public Producto publicarProducto(Producto p) throws Exception {
@@ -53,6 +56,18 @@ public class ProductoServicioImpl implements ProductoServicio {
         Optional<Producto> producto = productoRepo.findById(codigo);
         if(producto.isEmpty()){
             throw new Exception("El codigo del producto no existe");
+        }else{
+            productoRepo.deleteById(codigo);
+        }
+    }
+
+    @Override
+    public void borrarProducto(Integer codigo) throws Exception {
+        Optional<Producto> producto = productoRepo.findById(codigo);
+        if(producto.isEmpty()){
+            throw new Exception("El codigo del producto no existe");
+        }else{
+            productoRepo.borrarProducto(codigo);
         }
     }
 
@@ -70,12 +85,25 @@ public class ProductoServicioImpl implements ProductoServicio {
     public List<Producto> listarTodosLosProductos() throws Exception {
         return productoRepo.findAll();
     }
+    @Override
+    public List<Producto> listarProductosSubastados() throws Exception{
+        return productoRepo.buscarProductosSubastados();
+    }
 
     @Override
     public void comentarProducto(Comentario comentario) throws Exception {
+        //probablemente toca corregirlo para que no actualizar cuando se responde
         comentario.setFecha(LocalDate.now());
         comentarioRepo.save(comentario);
     }
+    @Override
+    public void subastarProducto(Subasta subasta, Producto producto) throws Exception {
+
+        productoRepo.save(producto);
+        subastaRepo.save(subasta);
+
+    }
+
     @Override
     public void agregarProductoFavorito(Producto producto, Usuario usuario) throws Exception{
 
@@ -90,6 +118,7 @@ public class ProductoServicioImpl implements ProductoServicio {
         }
 
         productoRepo.save(producto);
+
     }
 
     @Override
@@ -133,14 +162,19 @@ public class ProductoServicioImpl implements ProductoServicio {
             DetalleCompra dc;
 
             for(ProductoCarrito p : productos){
-
+                Producto ptemp =productoRepo.findById(p.getId()).get();
                 dc = new DetalleCompra();
                 dc.setCompra(compraGuardada);
                 dc.setCantidad(p.getUnidades());
-                dc.setProducto(productoRepo.findById(p.getId()).get());
+                dc.setProducto(ptemp);
 
                 detalleCompraRepo.save(dc);
+                ptemp.setUnidadesDisponibles(ptemp.getUnidadesDisponibles()-p.getUnidades());
+                productoRepo.save(ptemp);
             }
+
+
+
             return compraGuardada;
         }catch (Exception e){
 
@@ -153,9 +187,19 @@ public class ProductoServicioImpl implements ProductoServicio {
 
         return productoRepo.buscarProductosDescuento();
     }
+
     @Override
-    public List<Producto> buscarProductosSubastados() throws Exception{
-        return  productoRepo.buscarProductosSubastados();
+    public List<String> listarMetodosPago(){
+        MetodoPago[] metodos = MetodoPago.values();
+        List<String> listaLlena = new ArrayList<>();
+        for (MetodoPago metodoTemp:metodos) {
+            listaLlena.add(metodoTemp.name());
+        }
+        return listaLlena;
     }
 
+    @Override
+    public MetodoPago obtenerMetodoPago(String metodoPago) throws Exception {
+        return MetodoPago.valueOf(metodoPago);
+    }
 }

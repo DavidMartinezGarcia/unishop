@@ -22,7 +22,7 @@ public class Subasta implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
-    @OneToOne(mappedBy = "subasta")
+    @OneToOne
     private Producto producto;
 
     @Column(nullable = false)

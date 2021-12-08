@@ -1,6 +1,7 @@
 package co.edu.uniquindio.unishop.servicios;
 
 import co.edu.uniquindio.unishop.entidades.Compra;
+import co.edu.uniquindio.unishop.entidades.MetodoPago;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.repositorios.CompraRepo;
 import co.edu.uniquindio.unishop.repositorios.DetalleCompraRepo;
@@ -22,6 +23,7 @@ public class CompraServicioImpl implements CompraServicio {
     @Autowired
     private UsuarioRepo usuarioRepo;
 
+
     @Override
     public List<Compra> listarComprasUsuario(Integer codigoUsuario) throws Exception{
         return usuarioRepo.obtenerCompras(codigoUsuario);
@@ -30,4 +32,16 @@ public class CompraServicioImpl implements CompraServicio {
     public List<Producto> listarProductosCompra(Integer codigoCompra) throws Exception{
       return compraRepo.obtenerProductosCompra(codigoCompra);
     }
+
+    @Override
+    public MetodoPago obtenerMetodoPago(String nombre) throws Exception {
+        return MetodoPago.valueOf(nombre);
+    }
+
+    @Override
+    public Compra obtenerCompraId(Integer id) throws Exception {
+        return compraRepo.getById(id);
+    }
+
+
 }

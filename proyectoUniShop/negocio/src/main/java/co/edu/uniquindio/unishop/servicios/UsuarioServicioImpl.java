@@ -78,8 +78,7 @@ public class UsuarioServicioImpl implements UsuarioServicio{
     @Override
     public void agregarProductoFavorito(Producto producto, Usuario usuario) throws Exception{
 
-        System.out.println("SERVICIO   U: "+usuario.getNombre() + "\t P: "+ producto.getNombre());
-        System.out.println("SERVICIO U: "+ producto.getListaUsuarios().size());
+        System.out.println("Servicio 1");
         usuario.getListaFavoritos().add(producto);
         System.out.println("Servicio 2");
         usuarioRepo.save(usuario);
