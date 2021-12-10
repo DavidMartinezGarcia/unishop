@@ -15,5 +15,7 @@ public interface SubastaRepo extends JpaRepository<Subasta, Integer> {
     @Query("select s.producto from Subasta s where s.producto is not null")
     List<Producto> listarProductosSubastados();
 
+    @Query("select s from Subasta s where s.codigo =:codigo")
+    Subasta obtenerSubastaCodigo(Integer codigo);
 
 }

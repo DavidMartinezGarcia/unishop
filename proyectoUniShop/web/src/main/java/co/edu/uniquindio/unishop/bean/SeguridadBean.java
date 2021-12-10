@@ -28,6 +28,9 @@ public class SeguridadBean implements Serializable{
     private boolean autenticado;
 
     @Getter @Setter
+    private boolean adminAutenticado;
+
+    @Getter @Setter
     private String email, password;
 
     @Getter @Setter
@@ -78,6 +81,9 @@ public class SeguridadBean implements Serializable{
             try {
                 usuarioSesion = usuarioServicio.iniciarSesion(email, password);
                 autenticado = true;
+                if(usuarioSesion.getTipoUsuario().getNombre().equals("admin")){
+                    adminAutenticado = true;
+                }
                 return "index?faces-redirect=true";
             } catch (Exception e) {
                 FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
@@ -131,7 +137,6 @@ public class SeguridadBean implements Serializable{
     public void comprar(){
         if(usuarioSesion!=null && !productosCarrito.isEmpty()){
             try{
-                System.out.println("METODO DE MIERDA: "+metodoSeleccionado);
                 //MetodoPago.valueOf(MetodoPago.class ,metodoSeleccionado)
                 productoServicio.comprarProductos(usuarioSesion, productosCarrito, MetodoPago.OTRO);
                 enviarEmailProductos();
@@ -140,6 +145,8 @@ public class SeguridadBean implements Serializable{
 
                 FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Compra realizada con exito");
                 FacesContext.getCurrentInstance().addMessage("compra-msj", fm);
+
+                productosCarrito.clear();
 
             }catch(Exception e){
                 FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "El producto ya se encuentra en el carrito");

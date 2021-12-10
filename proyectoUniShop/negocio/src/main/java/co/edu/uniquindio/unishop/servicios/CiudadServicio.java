@@ -9,4 +9,6 @@ public interface CiudadServicio {
     List<Ciudad> listarCiudades();
 
     Ciudad obtenerCiudad(Integer id) throws Exception;
+
+
 }

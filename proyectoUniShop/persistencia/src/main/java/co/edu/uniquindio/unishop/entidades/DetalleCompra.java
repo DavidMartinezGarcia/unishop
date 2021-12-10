@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,6 +31,10 @@ public class DetalleCompra implements Serializable {
     @Positive
     @Column(nullable = false)
     private Integer cantidad;
+
+    @OneToOne(mappedBy = "codigoProducto")
+    @JsonIgnore
+    private Chat chat;
 
     public DetalleCompra(Producto producto, Compra compra, Integer cantidad) {
         this.producto = producto;

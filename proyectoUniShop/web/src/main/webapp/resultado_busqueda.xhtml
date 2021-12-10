@@ -23,45 +23,80 @@
 
 
         <div class="container">
-            <h:form>
-                <p:dataView value="#{busquedaBean .productos}" paginator="true" rows="8" var="producto" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
-                    <p:dataViewGridItem>
-                        <p> # - #{producto.nombre}</p>
-                        <div class="card" >
-                            <img src="/uploads/#{producto.imagenPrincipal}" class="card-img-top" alt="..." />
-                            <div class="card-body">
-                                <h5 class="card-title">#{producto.nombre}</h5>
-                                <p class="card-text">#{producto.precio}</p>
-                                <hr />
-                                <p:commandButton value="Ver detalle" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" action="#{inicioBean.irADetalle(producto.codigo)}" />
-                            </div>
-                        </div>
-                    </p:dataViewGridItem>
-                    <p:dataViewListItem>
-                        <div class="row d-flex" >
-                            <div class="col-lg-2 col-md-1" style="text-align: center" >
-                                <p:graphicImage url="/uploads/#{producto.imagenPrincipal}" styleClass="imagen-producto" />
-                            </div>
-                            <div class="col-lg-8 col-md-1 align-self-center" >
-                                <p:outputPanel>
-                                    <h:panelGrid columns="2" cellpadding="5">
-                                        <h:outputText value="Nombre:" />
-                                        <h:outputText value="#{producto.nombre}" style="font-weight: bold" />
-                                        <h:outputText value="Precio:" />
-                                        <h:outputText value="$#{producto.precio}" />
-                                        <h:outputText value="Categorías:" />
+                 <h:form>
 
-                                        <h:outputText  value="#{producto.mostrarCategorias()}"/>
-                                    </h:panelGrid>
-                                </p:outputPanel>
-                            </div>
-                            <div class="col-lg-2 col-md-1 align-self-center" >
-                                <p:commandButton value="Ver detalle" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" action="#{inicioBean.irADetalle(producto.codigo)}" />
-                            </div>
+                    <div style="display:flex;">
+
+                         <div>
+                            <p:selectOneMenu id = "categoria_filtro" value="#{busquedaBean.categoriaBuscada}" converter="#{categoriaConverter}">
+                                <f:selectItem itemLabel="Seleccione una Categoria" noSelectionOption="true"/>
+                                <f:selectItems value="#{busquedaBean.listaCategorias}" var="categoria" itemLabel="#{categoria.nombre}"/>
+                            </p:selectOneMenu>
+                         </div>
+                         <div>
+                            <p:selectOneMenu id = "ubicacion_filtro" value="#{busquedaBean.ciudadBuscada}" converter="#{ciudadConverter}">
+                                <f:selectItem itemLabel="Seleccione una Ubicación" noSelectionOption="true"/>
+                                <f:selectItems value="#{busquedaBean.listaCiudades}" var="ciudad" itemLabel="#{ciudad.nombre}"/>
+                            </p:selectOneMenu>
                         </div>
-                    </p:dataViewListItem>
-                </p:dataView>
-            </h:form>
+                        <div>
+                            <p:outputLabel value = "Precio: " />
+                            <p:inputText value="#{busquedaBean.precioBuscado}" />
+                        </div>
+                        <div>
+                            <p:selectOneMenu id = "calificacion_filtro" value="#{busquedaBean.calificacionBuscada}" >
+                                <f:selectItem itemLabel="Seleccione una Calificacion" noSelectionOption="true"/>
+                                <f:selectItems value="#{busquedaBean.listaCalificaciones}" var="calificacion" itemLabel="#{calificacion}"/>
+
+                            </p:selectOneMenu>
+                        </div>
+                        <div>
+                            <p:commandButton icon="bx bx-search-alt" action="#{busquedaBean.buscarFiltros()}">
+
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </h:form>
+
+                <h:form>
+                    <p:dataView value="#{busquedaBean .productos}" paginator="true" rows="8" var="producto" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+                        <p:dataViewGridItem>
+                            <p> # - #{producto.nombre}</p>
+                            <div class="card" >
+                                <img src="/uploads/#{producto.imagenPrincipal}" class="card-img-top" alt="..." />
+                                <div class="card-body">
+                                    <h5 class="card-title">#{producto.nombre}</h5>
+                                    <p class="card-text">#{producto.precio}</p>
+                                    <hr />
+                                    <p:commandButton value="Ver detalle" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" action="#{inicioBean.irADetalle(producto.codigo)}" />
+                                </div>
+                            </div>
+                        </p:dataViewGridItem>
+                        <p:dataViewListItem>
+                            <div class="row d-flex" >
+                                <div class="col-lg-2 col-md-1" style="text-align: center" >
+                                    <p:graphicImage url="/uploads/#{producto.imagenPrincipal}" styleClass="imagen-producto" />
+                                </div>
+                                <div class="col-lg-8 col-md-1 align-self-center" >
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Nombre:" />
+                                            <h:outputText value="#{producto.nombre}" style="font-weight: bold" />
+                                            <h:outputText value="Precio:" />
+                                            <h:outputText value="$#{producto.precio}" />
+                                            <h:outputText value="Categorías:" />
+
+                                            <h:outputText  value="#{producto.mostrarCategorias()}"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </div>
+                                <div class="col-lg-2 col-md-1 align-self-center" >
+                                    <p:commandButton value="Ver detalle" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" action="#{inicioBean.irADetalle(producto.codigo)}" />
+                                </div>
+                            </div>
+                        </p:dataViewListItem>
+                    </p:dataView>
+                </h:form>
         </div>
 
     </ui:define>

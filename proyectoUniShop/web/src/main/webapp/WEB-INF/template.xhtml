@@ -58,7 +58,8 @@
                                 <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/carrito.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-cart'/><br/>Carrito</a></li>
                                 <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/subastas.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-medal'/><br/>Subastas</a></li>
                                 <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}"><a href="/usuario/chat.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bx-conversation'/><br/>Chats</a></li>
-
+                                <li class="nav-item" jsf:rendered="#{seguridadBean.adminAutenticado}"><a href="/usuario/reportes.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bxs-report'/><br/>Reportes</a></li>
+                                <li class="nav-item" jsf:rendered="#{seguridadBean.adminAutenticado}"><a href="/usuario/usuarios.xhtml" class="nav-link link-dark px-1 mt-0"><i class='bx bxs-user-detail'/><br/>Usuarios</a></li>
                             </ul>
                 <div class="text-end">
                     <h:form action="" rendered="#{!seguridadBean.autenticado}" style="margin-top: 20px">
@@ -103,7 +104,7 @@
                 </div>
             </div>
             <div style="margin-left: 80px">
-                <p:commandButton value="Iniciar Sesión" action="#{seguridadBean.iniciarSesion}" styleClass="mt-4" update="@form" style="alignment: right" icon="pi pi-sign-in" />
+                <p:commandButton value="Iniciar Sesión" action="#{seguridadBean.iniciarSesion()}" styleClass="mt-4" update="@form" style="alignment: right" icon="pi pi-sign-in" />
             </div>
             <p:growl for="login-bean" showDetail="true" />
         </h:form>

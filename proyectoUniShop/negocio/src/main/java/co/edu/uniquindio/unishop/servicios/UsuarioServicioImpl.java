@@ -1,10 +1,16 @@
 package co.edu.uniquindio.unishop.servicios;
 
+import co.edu.uniquindio.unishop.entidades.Chat;
 import co.edu.uniquindio.unishop.entidades.Producto;
+import co.edu.uniquindio.unishop.entidades.TipoUsuario;
 import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.proyecciones.UsuarioBase;
+import co.edu.uniquindio.unishop.repositorios.TipoUsuarioRepo;
 import co.edu.uniquindio.unishop.repositorios.UsuarioRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +18,9 @@ import java.util.Optional;
 public class UsuarioServicioImpl implements UsuarioServicio{
 
     private final UsuarioRepo usuarioRepo;
+
+    @Autowired
+    private TipoUsuarioRepo tipoUsuarioRepo;
 
     public UsuarioServicioImpl(UsuarioRepo usuarioRepo) {
         this.usuarioRepo = usuarioRepo;
@@ -30,6 +39,12 @@ public class UsuarioServicioImpl implements UsuarioServicio{
         }
 
         return usuarioRepo.save(u);
+    }
+
+    @Override
+    public TipoUsuario obtenerTipoUsuario(String nombre) throws Exception{
+
+        return tipoUsuarioRepo.obtenerTipoUsuario(nombre);
     }
 
     private Optional<Usuario> buscarPorEmail(String email) throws Exception {
@@ -61,6 +76,16 @@ public class UsuarioServicioImpl implements UsuarioServicio{
     @Override
     public List<Usuario> listarUsuarios() {
         return usuarioRepo.findAll();
+    }
+
+    public List<UsuarioBase> listarUsuariosBase(){
+        return null;
+    }
+
+    @Override
+    public List<Usuario> listarUsuariosMortales() throws Exception{
+
+        return usuarioRepo.obtenerUsuariosMortales();
     }
 
     @Override
@@ -102,6 +127,11 @@ public class UsuarioServicioImpl implements UsuarioServicio{
     public  Usuario recuperarContrasenia(String email, Integer codigo) throws  Exception{
 
         return usuarioRepo.findByEmailAndCodigo(email, codigo).orElseThrow( () -> new Exception("El usuario no existe"));
+    }
+
+    @Override
+    public List<Chat> obtenerChatsUsuario(Integer codigo) throws Exception {
+        return usuarioRepo.obtenerChatsUsuario(codigo);
     }
 
     public void agregarFavorito(Producto productoFavorito){

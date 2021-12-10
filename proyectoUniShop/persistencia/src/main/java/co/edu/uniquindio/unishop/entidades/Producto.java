@@ -1,7 +1,9 @@
 package co.edu.uniquindio.unishop.entidades;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -75,6 +77,7 @@ public class Producto implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "producto")
     @JsonIgnore
+    @ToString.Exclude
     private List<Subasta> subastas;
 
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -88,6 +91,9 @@ public class Producto implements Serializable {
     @JsonIgnore
     private List<Categoria> listaCategorias;
 
+    @Getter @Setter
+    private Integer calificacion;
+
     public Producto(String nombre, String descripcion, Double precio, Integer unidadesDisponibles, Ciudad ciudad, Integer descuento, LocalDate fechaLimite, Usuario vendedor, List<Categoria> categorias){
 
         this.nombre = nombre;
@@ -99,6 +105,7 @@ public class Producto implements Serializable {
         this.fechaLimite = fechaLimite;
         this.vendedor = vendedor;
         this.listaCategorias = categorias;
+        calificacion = 0;
         listaUsuarios = new ArrayList<>();
 
     }
@@ -124,5 +131,14 @@ public class Producto implements Serializable {
     }
     public Double calcularPrecioDescuento(){
         return precio - (precio*descuento/100);
+    }
+
+    public void obtenerCalificacion(){
+
+        Integer sum=0;
+        for (Comentario c: comentarios) {
+            sum+= c.getPuntuacion();
+        }
+        calificacion = sum / comentarios.size();
     }
 }

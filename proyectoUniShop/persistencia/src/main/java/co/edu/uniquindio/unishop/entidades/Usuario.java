@@ -2,6 +2,8 @@ package co.edu.uniquindio.unishop.entidades;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Length;
@@ -53,10 +55,12 @@ public class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "usuario")
     @ToString.Exclude
-    private List<Chat> chats;
+    @JsonIgnore
+    private List<Chat> chats = new ArrayList<>();
 
     @Column(nullable = false, length = 80)
     @Length(max = 80,min = 6, message = "Longitud no válida para la contraseña")
+    @JsonIgnore
     private String contrasenia;
 
 
@@ -79,6 +83,8 @@ public class Usuario implements Serializable {
     @JsonIgnore
     private List<Producto> productos;
 
+
+
     public Usuario(Ciudad ciudad, String nombre, String email, List<String> telefonos, String contrasenia, TipoUsuario tipoUsuario) {
 
         this.ciudad = ciudad;
@@ -88,6 +94,7 @@ public class Usuario implements Serializable {
         this.contrasenia = contrasenia;
         this.tipoUsuario = tipoUsuario;
         listaFavoritos = new ArrayList<>();
+        this.chats = new ArrayList<>();
     }
 
     public Usuario(Integer codigo,Ciudad ciudad, String nombre, String email, List<String> telefonos, String contrasenia, TipoUsuario tipoUsuario) {
@@ -98,5 +105,6 @@ public class Usuario implements Serializable {
         this.telefonos = telefonos;
         this.contrasenia = contrasenia;
         this.tipoUsuario = tipoUsuario;
+        this.chats = new ArrayList<>();
     }
 }

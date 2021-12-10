@@ -47,8 +47,12 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     @Override
     public void actualizarProducto(Producto producto) throws Exception {
+        try {
+            productoRepo.save(producto);
 
-
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
@@ -84,6 +88,53 @@ public class ProductoServicioImpl implements ProductoServicio {
     @Override
     public List<Producto> listarTodosLosProductos() throws Exception {
         return productoRepo.findAll();
+    }
+    @Override
+    public List<Producto> listarProductosFiltros(String busquedaParam,Categoria categoria, Ciudad ciudad, Double precio, Integer calificacion) throws Exception{
+
+        List<Producto> productosFiltrados = new ArrayList<>();
+        List<Producto> productosFiltradosNombre = new ArrayList<>();
+        List<Producto> productosFiltradosCategoria = new ArrayList<>();
+        List<Producto> productosFiltradosCiudad = new ArrayList<>();
+        List<Producto> productosFiltradosPrecio = new ArrayList<>();
+        List<Producto> productosFiltradosCalificacion = new ArrayList<>();
+        boolean flag = false;
+
+        productosFiltradosNombre = productoRepo.buscarProductoNombre(busquedaParam);
+
+        if(categoria != null){
+            productosFiltradosCategoria = productoRepo.buscarProductosCategoria(categoria);
+        }
+        if(ciudad != null){
+            productosFiltradosCiudad = productoRepo.buscarProductosUbicacion(busquedaParam,ciudad);
+        }
+        if(precio != null){
+            productosFiltradosPrecio =productoRepo.buscarProductosPrecio(busquedaParam,precio);
+        }
+        if(calificacion != null){
+            productosFiltradosCalificacion = productoRepo.buscarProductosCalificacion(busquedaParam,calificacion);
+        }
+
+        for(int i=0; i<productosFiltradosNombre.size();i++){
+
+            Producto p = productosFiltrados.get(i);
+
+            if(productosFiltradosCategoria.contains(p)){
+                flag = flag && true;
+            }
+            if(productosFiltradosCiudad.contains(p)){
+                flag = flag && true;
+            }
+            if(productosFiltradosPrecio.contains(p)){
+                flag = flag && true;
+            }
+            if(productosFiltradosCalificacion.contains(p) ){
+                flag = flag && true;
+            }
+
+        }
+
+        return productosFiltrados;
     }
     @Override
     public List<Producto> listarProductosSubastados() throws Exception{

@@ -25,4 +25,6 @@ public interface CompraRepo extends JpaRepository<Compra, Integer> {
     @Query("select sum(d.cantidad*d.producto.precio) from DetalleCompra d where d.producto.vendedor.codigo = :codigo")
     Long calcularTotalVentas(String codigo);
 
+    //@Query()
+    //List<int>
 }

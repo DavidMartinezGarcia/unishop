@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,10 +26,17 @@ public class Chat implements Serializable {
 
     @OneToMany(mappedBy = "chat")
     @ToString.Exclude
+    @JsonIgnore
     private List<Mensaje> mensajes;
 
-    public Chat(Usuario usuario, List<Mensaje> mensajes) {
-        this.codigoChat = codigoChat;
+    @OneToOne
+    @ToString.Exclude
+    @JsonIgnore
+    private DetalleCompra codigoProducto;
+
+    public Chat(Usuario usuario, List<Mensaje> mensajes, DetalleCompra codigoProducto) {
+        this.usuario = usuario;
         this.mensajes = mensajes;
+        this.codigoProducto = codigoProducto;
     }
 }

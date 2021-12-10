@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="../WEB-INF/template.xhtml">
+
+  <ui:define name="title">Gestion Usuarios</ui:define>
+  <ui:define name="content">
+    <div class="row w-100">
+      <div class="col-lg-12 col-md-12 col-12">
+
+        <h1 class="display-5 mb-2 text-center" >Usuarios en el Sistema</h1>
+
+        <p class="mb-5 text-center">
+
+          <i class="text-info font-weight-bold">#{adminBean.usuarios.size()}</i> Usuarios Mortales en el sistema</p>
+        <h:form id="form">
+          <table id="shoppingCart" class="table table-condensed table-responsive">
+            <thead>
+            <tr>
+              <th style="width:50%">Usuario</th>
+              <th style="width:12%">Permisos</th>
+              <th style="width:10%">Eliminar</th>
+            </tr>
+            </thead>
+            <p:repeat value="#{adminBean.usuarios}" var="usuario" varStatus = "p">
+              <tr>
+                <td>
+                  <div class="row">
+                    <div class="col-md-10 text-left mt-sm-2 align-self-center">
+                      <h4>#{usuario.nombre}</h4>
+                    </div>
+                  </div>
+                </td>
+                <td class="actions align-middle">
+                  <div class="text-right">
+                    <p:commandButton value="Volver Admin" icon ="bx bxs-graduation" update="@form" action="#{adminBean.volverAdmin(usuario)}" styleClass="btn btn-white border-secondary bg-white btn-md mb-2 h5 mt-2"/>
+                  </div>
+                </td>
+                <td>
+                  <p:commandButton value="Eliminar" icon ="bx bxs-trash" update="@form" action="#{adminBean.eliminarUsuario(usuario.codigo)}" styleClass="btn btn-white border-secondary bg-white btn-md mb-2 h5 mt-2"/>
+                </td>
+              </tr>
+            </p:repeat>
+          </table>
+          <p:growl for="mis-usuarios" showDetail="true" />
+        </h:form>
+      </div>
+    </div>
+
+  </ui:define>
+
+</ui:composition>
+</html>

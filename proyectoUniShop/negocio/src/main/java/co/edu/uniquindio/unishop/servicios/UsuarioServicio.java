@@ -1,6 +1,8 @@
 package co.edu.uniquindio.unishop.servicios;
 
+import co.edu.uniquindio.unishop.entidades.Chat;
 import co.edu.uniquindio.unishop.entidades.Producto;
+import co.edu.uniquindio.unishop.entidades.TipoUsuario;
 import co.edu.uniquindio.unishop.entidades.Usuario;
 import java.util.List;
 
@@ -16,6 +18,10 @@ public interface UsuarioServicio {
 
     List<Producto> listarFavoritos(String email) throws Exception;
 
+    TipoUsuario obtenerTipoUsuario(String nombre) throws Exception;
+
+    List<Usuario> listarUsuariosMortales() throws Exception;
+
     List<Producto> obtenerFavoritos(Integer codigo) throws  Exception;
 
     void agregarProductoFavorito(Producto producto, Usuario usuario) throws Exception;
@@ -25,4 +31,6 @@ public interface UsuarioServicio {
     Usuario iniciarSesion(String email, String password) throws Exception;
 
     Usuario recuperarContrasenia(String email, Integer codigo) throws  Exception;
+
+    List<Chat> obtenerChatsUsuario(Integer codigo) throws Exception;
 }

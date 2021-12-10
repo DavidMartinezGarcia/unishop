@@ -1,9 +1,6 @@
 package co.edu.uniquindio.unishop.repositorios;
 
-import co.edu.uniquindio.unishop.entidades.Categoria;
-import co.edu.uniquindio.unishop.entidades.Comentario;
-import co.edu.uniquindio.unishop.entidades.Producto;
-import co.edu.uniquindio.unishop.entidades.Usuario;
+import co.edu.uniquindio.unishop.entidades.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -58,5 +55,27 @@ public interface ProductoRepo extends JpaRepository<Producto, Integer> {
     //Consulta para obtener los productos que están siendo subastados
     @Query("select  p from Producto p where p.subastas is not empty")
     List<Producto> buscarProductosSubastados();
+
+    //Consulta para obtener los productos filtrados por Nombre, Categoria, Ubicación, Precio, Calificación -> En proceso me quedo grande
+    @Query("select  p from Producto p " +
+            "where p.nombre like concat('%', :nombre, '%') and (" +
+            "(:categoria is not null and :categoria member of p.listaCategorias) and " +
+            "(:ciudad is not null and :ciudad = p.ubicacion and p.precio = :precio ) and " +
+            "(:calificacion is not null and p.calificacion = :calificacion))")
+    List<Producto> buscarProductosFiltrados(String nombre, Categoria categoria, Ciudad ciudad, Double precio, Integer calificacion);
+
+    //Consulta para obtener los productos filtrados por su Ubicación
+    @Query("select p from Producto p where p.nombre like concat('%', :busquedaParam, '%') and :ciudad = p.ubicacion")
+    List<Producto> buscarProductosUbicacion(String busquedaParam,Ciudad ciudad);
+
+    //Consulta para obtener los productos filtrados por su precio
+    @Query("select p from Producto p where p.nombre like concat('%', :busquedaParam, '%') and :precio = p.precio")
+    List<Producto> buscarProductosPrecio(String busquedaParam,Double precio);
+
+    //Consulta para obtener los productos filtrados por su calificacion
+    @Query("select p from Producto p where p.nombre like concat('%', :busquedaParam, '%') and :calificacion = p.calificacion")
+    List<Producto> buscarProductosCalificacion(String busquedaParam,Integer calificacion);
+
+
 
 }

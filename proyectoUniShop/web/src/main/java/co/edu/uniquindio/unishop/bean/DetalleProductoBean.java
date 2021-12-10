@@ -82,6 +82,7 @@ public class DetalleProductoBean implements Serializable {
                 promedio += comentario.getPuntuacion();
                 contador++;
             }
+            producto.obtenerCalificacion();
             this.calificacionPromedio = promedio/contador;
         }
 
@@ -109,8 +110,6 @@ public class DetalleProductoBean implements Serializable {
     }
     public void agregarFavoritos(){
         try{
-            System.out.println("Nombre usuario: "+usuarioSesion.getNombre());
-            System.out.println("Lista favoritos: "+usuarioSesion.getListaFavoritos());
             usuarioSesion.getListaFavoritos().add(producto);
             usuarioServicio.actualizarUsuario(usuarioSesion);
         }catch(Exception e){

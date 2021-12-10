@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unishop.repositorios;
 
+import co.edu.uniquindio.unishop.entidades.Chat;
 import co.edu.uniquindio.unishop.entidades.Compra;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.entidades.Usuario;
@@ -43,4 +44,11 @@ public interface UsuarioRepo extends JpaRepository<Usuario, Integer> {
     //Consulta para obtener los productos comprados por un usuario
     @Query("select p from Usuario u, IN (u.compras) p where u.codigo = :codigoUsuario")
     List<Compra> obtenerCompras(Integer codigoUsuario);
+
+    @Query("select u.chats from Usuario u where u.codigo = :codigo")
+    List<Chat> obtenerChatsUsuario(Integer codigo);
+
+    //Consulta para obtener los usuarios que NO son administradores
+    @Query("select u from Usuario u where u.tipoUsuario.nombre <> 'admin'")
+    List<Usuario> obtenerUsuariosMortales();
 }

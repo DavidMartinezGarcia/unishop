@@ -6,7 +6,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
 <ui:composition template="../WEB-INF/template.xhtml">
     <ui:define name="title">Chat</ui:define>
     <ui:define name="content">
@@ -15,42 +16,57 @@
                 <table id="chats" class="table table-condensed table-responsive">
                     <thead>
                     <tr>
-                        <th style="width: 10%">Imagen</th>
-                        <th style="width: 20%">Nombre x ul</th>
-                        <th style="width: 10%">Hora</th>
+                        <th style="width: 30%"></th>
+                        <th style="width: 50%"></th>
+                        <th style="width: 20%"></th>
+                        <th style="width: 20%"></th>
+
                     </tr>
                     </thead>
-                    <tbody>
-                    <p:repeat value="#{chatBean.chats}" var="chat" varStatus="c">
+                    <tbody jsf:rendered="#{chatBean.chats!=null}">
+                    <p:repeat value="#{chatBean.chats}" var="chat">
                         <tr>
-                            <td>
-                                <div class="row">
-                                    <div class="col-md-2 text-left">
-                                        <p:graphicImage class="card-img-top" value="/uploads/avatar.png" />
-                                    </div>
-                                    <div class="col-md-10 text-left mt-sm-2 align-self-center">
-                                        <h4> #{chat.usuario.nombre} </h4>
-                                        <h3> #{chatBean.getUltimoMensaje(chat.mensajes).mensaje}</h3>
-                                    </div>
-                                    <div class="col-md-10 text-left mt-sm-2 align-self-center">
-                                        <h4>#{chatBean.getUltimoMensaje(chat.mensajes).fecha}</h4>
-                                    </div>
-                                </div>
+                            <div class="col-md-2 text-left">
+                                <td>
+                                    <p:graphicImage styleClass="rounded-circle" style="height: 80px; width: 80px; margin: 20px;" url="/uploads/avatar.png" />
+                                </td>
+                            </div>
 
-                            </td>
+                            <div class="col-md-2 mt-sm-1 align-self-center">
+                                <td>
+                                    <h4 style="margin-top: 15px"> #{chatBean.obtenerNombreVendedor(chat)} </h4>
+                                    <h5> #{chatBean.getUltimoMensaje(chat).mensaje}</h5>
+                                </td>
+                            </div>
+
+                            <div class="col-md-10 text-left mt-sm-2 align-self-center">
+                                <td>
+                                    <p:commandButton  style="margin:10px" value="Selec" icon="pi pi-conversation" action="#{chatBean.seleccionarChat(chat)}"></p:commandButton>
+                                </td>
+                            </div>
                         </tr>
                     </p:repeat>
                     </tbody>
                 </table>
             </div>
-            <div class="col">
-                <p:outputLabel rendered="#{chatBean.chatSeleccionado != null}" value="#{chatBean.getChatSeleccionado.usuario.nombre}"/>
-                <p:outputLabel rendered="#{chatBean.chatSeleccionado == null}" value="Ningun chat seleccionado"/>
-                <p:repeat value="#{chatBean.mensajesChatSeleccionado}" var="mensaje">
-                    <p:outputLabel rendered="#{chatBean.perteneceAlUsuario(mensaje.chat.usuario)}" value="#{mensaje.mensaje}" style="background-color: indianred;"/>
-                    <p:outputLabel rendered="#{!(chatBean.perteneceAlUsuario(mensaje.chat.usuario))}" value="#{mensaje.mensaje}" style="background-color: darkseagreen;"/>
-                </p:repeat>
+            <div class="col" style="border: 2px solid #D9DADA; margin-top: 20px; padding: 20px">
+
+                    <p:outputLabel rendered="#{chatBean.chatSeleccionado != null}" value="#{chatBean.getChatSeleccionado.usuario.nombre}"/>
+                   <p:repeat value="#{chatBean.mensajes}" var="mensaje">
+                        <p:outputLabel value="#{mensaje.mensaje}" style="background-color: indianred;"/>
+                        <p:outputLabel value="#{mensaje.mensaje}" style="background-color: darkseagreen;"/>
+                    </p:repeat>
+                    <div class="row align-bottom"  style="margin-top: 500px">
+
+                        <div class="col">
+                            <p:inputText value="#{chatBean.nuevoMensaje}" style="min-width: 500px"/>
+                        </div>
+                        <div class="col">
+                            <p:commandButton action="#{chatBean.agregarMensaje()}" icon="pi pi-send" styleClass="btn btn-white border-secondary bg-white" ></p:commandButton>
+                        </div>
+                    </div>
             </div>
+
         </div>
     </ui:define>
 </ui:composition>

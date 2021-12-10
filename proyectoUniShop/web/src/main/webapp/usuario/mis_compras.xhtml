@@ -34,7 +34,7 @@
                       <p:outputLabel style="margin:40px">Cantidad: #{detalle.cantidad}</p:outputLabel>
                     </div>
                     <div class="col-md-2 column">
-                      <p:commandButton style="margin-top:35px"  value="chatear" icon="bx bx-conversation" type="button" action="#{usuarioBean.agregarChat(detalle.producto.vendedor)}" styleClass="btn btn-white border-secondary bg-white "/>
+                      <p:commandButton style="margin-top:35px"  value="chatear" icon="bx bx-conversation" action="#{usuarioBean.agregarChat(detalle)}" styleClass="btn btn-white border-secondary bg-white "/>
                     </div>
                   </div>
                 </p:repeat>

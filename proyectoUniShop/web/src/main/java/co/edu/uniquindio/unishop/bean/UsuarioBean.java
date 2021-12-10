@@ -1,11 +1,13 @@
 package co.edu.uniquindio.unishop.bean;
 
 import co.edu.uniquindio.unishop.dto.ProductoUsuario;
+import co.edu.uniquindio.unishop.dto.SubastaProducto;
 import co.edu.uniquindio.unishop.dto.UsuarioCompra;
 import co.edu.uniquindio.unishop.entidades.*;
 import co.edu.uniquindio.unishop.servicios.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -36,6 +38,9 @@ public class UsuarioBean implements Serializable {
     @Autowired
     private ProductoServicio productoServicio;
 
+    @Autowired
+    private ChatServicio chatServicio;
+
     @Getter @Setter
     private String telefono1;
 
@@ -52,13 +57,10 @@ public class UsuarioBean implements Serializable {
     private List<ProductoUsuario> productosFavoritos;
 
     @Getter @Setter
-    private List<ProductoUsuario> productosSubastados;
+    private List<SubastaProducto> productosSubastados;
 
     @Autowired
     private CompraServicio compraServicio;
-
-    @Autowired
-    private ChatServicio chatServicio;
 
     @Getter @Setter
     private List<UsuarioCompra> listaCompras;
@@ -72,7 +74,7 @@ public class UsuarioBean implements Serializable {
         listaCiudades = ciudadServicio.listarCiudades();
         productosUsuario = new ArrayList<ProductoUsuario>();
         productosFavoritos = new ArrayList<ProductoUsuario>();
-        productosSubastados = new ArrayList<ProductoUsuario>();
+        productosSubastados = new ArrayList<SubastaProducto>();
         listaCompras = new ArrayList<UsuarioCompra>();
     }
 
@@ -91,8 +93,8 @@ public class UsuarioBean implements Serializable {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Registro exitoso");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+
+
         }
     }
 
@@ -111,43 +113,21 @@ public class UsuarioBean implements Serializable {
         }
 
     }
-    public void agregarProductosSubastados(){
-
-        try{
-            List<Producto> productosSubasta = productoServicio.listarProductosSubastados();
-            for (Producto producto: productosSubasta) {
-                ProductoUsuario productoUsuario = new ProductoUsuario(producto.getCodigo(),producto.getNombre(),producto.getImagenPrincipal(),producto.getPrecio(),producto.getUnidadesDisponibles());
-                if(!productosSubastados.contains(productoUsuario)){
-                    productosSubastados.add(productoUsuario);
-                }
-            }
-            System.out.println(productosSubastados.size());
-        }catch(Exception e){
-            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", e.getMessage());
-            FacesContext.getCurrentInstance().addMessage(null, fm);
-        }
-
-    }
 
     public void agregarCompraUsuario(Integer codigoUsuario){
 
-       try {
+        try {
             List<Compra> listasCompra = compraServicio.listarComprasUsuario(codigoUsuario);
             for(Compra compra: listasCompra){
                 UsuarioCompra compraUsuario =  new UsuarioCompra(compra.getMetodoDePago(), compra.getFecha(), compra.getCodigo(), compra.getDetalleCompras());
 
-                    listaCompras.add(compraUsuario);
+                listaCompras.add(compraUsuario);
 
             }
         } catch (Exception e) {
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, fm);
         }
-    }
-
-    public void agregarProductoCompra(){
-
-
     }
 
     public void agregarProductosFavoritos(Integer codigo){
@@ -171,18 +151,23 @@ public class UsuarioBean implements Serializable {
 
     public void eliminarFavorito(int indice){
         try{
-        productosFavoritos.remove(indice);
-        usuarioSesion.getListaFavoritos().remove(indice);
-        usuarioServicio.actualizarUsuario(usuarioSesion);
+            productosFavoritos.remove(indice);
+            usuarioSesion.getListaFavoritos().remove(indice);
+            usuarioServicio.actualizarUsuario(usuarioSesion);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public void agregarChat(Usuario vendedor){
-        List<Mensaje> lista = new ArrayList<>();
-        Chat chat = new Chat(vendedor,lista);
-        usuarioSesion.getChats().add(chat);
+    public void agregarChat(DetalleCompra detalleCompra) throws Exception {
+
+        LocalDate fechaActual = LocalDate.now();
+        Mensaje mensaje = new Mensaje(fechaActual, "Hola, deseo hacer una pregunta");
+        Chat chat = new Chat(usuarioSesion, new ArrayList<Mensaje>(), detalleCompra);
+        mensaje.setChat(chat);
+        chat.getMensajes().add(mensaje);
         chatServicio.guardarChat(chat);
+        chatServicio.guardarMensaje(mensaje);
     }
 }
+

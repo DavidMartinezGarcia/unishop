@@ -22,6 +22,8 @@ public interface ProductoServicio {
 
     List<Producto> listarTodosLosProductos() throws Exception;
 
+    List<Producto> listarProductosFiltros(String busquedaParam, Categoria categoria, Ciudad ciudad, Double precio, Integer calificacion) throws Exception;
+
     List<Producto> listarProductosSubastados() throws Exception;
 
     void comentarProducto(Comentario comentario) throws Exception;

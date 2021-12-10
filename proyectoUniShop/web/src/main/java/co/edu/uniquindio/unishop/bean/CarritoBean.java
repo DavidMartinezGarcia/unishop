@@ -72,11 +72,4 @@ public class CarritoBean {
         this.productosCarrito.add(nuevoDetalle);
     }
 
-
-    public void sumarCantidad() {
-        this.nuevoCantidad++;
-    }
-    public void restarCantidad() {
-        this.nuevoCantidad--;
-    }
 }

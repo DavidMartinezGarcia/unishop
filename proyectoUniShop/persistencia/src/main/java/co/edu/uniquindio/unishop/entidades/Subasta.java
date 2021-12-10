@@ -39,4 +39,14 @@ public class Subasta implements Serializable {
         this.producto = producto;
         this.tiempoLimite = tiempoLimite;
     }
+
+    public Double obtenerOfertaMayor(){
+        Double ofertaMayor = 0D;
+        for(Oferta oferta : listaPujas){
+            if(oferta.getValor()>ofertaMayor){
+                ofertaMayor = oferta.getValor();
+            }
+        }
+        return ofertaMayor;
+    }
 }

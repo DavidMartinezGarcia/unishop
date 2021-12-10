@@ -1,8 +1,10 @@
 package co.edu.uniquindio.unishop.bean;
 
 import co.edu.uniquindio.unishop.entidades.Categoria;
+import co.edu.uniquindio.unishop.entidades.Ciudad;
 import co.edu.uniquindio.unishop.entidades.Producto;
 import co.edu.uniquindio.unishop.servicios.CategoriaServicio;
+import co.edu.uniquindio.unishop.servicios.CiudadServicio;
 import co.edu.uniquindio.unishop.servicios.ProductoServicio;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -28,6 +31,15 @@ public class BusquedaBean implements Serializable {
     private Categoria categoriaBuscada;
 
     @Getter @Setter
+    private Ciudad ciudadBuscada;
+
+    @Getter @Setter
+    private Double precioBuscado;
+
+    @Getter @Setter
+    private Integer calificacionBuscada;
+
+    @Getter @Setter
     @Value("#{param['busqueda']}")
     private String busquedaParam;
 
@@ -38,14 +50,31 @@ public class BusquedaBean implements Serializable {
     @Getter @Setter
     private List<Producto> productos;
 
+    @Getter @Setter
+    private List<Ciudad> listaCiudades;
+
+    @Getter @Setter
+    private List<Categoria> listaCategorias;
+
+    @Getter @Setter
+    private List<Integer> listaCalificaciones;
+
     @Autowired
     private ProductoServicio productoServicio;
 
     @Autowired
     private CategoriaServicio categoriaServicio;
 
+    @Autowired
+    private CiudadServicio ciudadServicio;
+
     @PostConstruct
     public void inicializar(){
+
+        listaCiudades = ciudadServicio.listarCiudades();
+        listaCategorias = categoriaServicio.listarCategorias();
+        llenarCalificaciones();
+
         if(busquedaParam!=null && !busquedaParam.isEmpty()){
                 productos = productoServicio.buscarProductos(busquedaParam,null);
         }
@@ -54,6 +83,18 @@ public class BusquedaBean implements Serializable {
             Categoria categoria = categoriaServicio.obtenerCategoria(codigo);
             productos = productoServicio.listarProductosCategoria(categoria);
         }
+    }
+
+    public void llenarCalificaciones(){
+
+        listaCalificaciones = new ArrayList<Integer>();
+        Integer num = 0;
+            for(int i=0; i<6; i++){
+
+                listaCalificaciones.add(num);
+                num++;
+
+            }
     }
 
     public String buscar(){
@@ -76,6 +117,19 @@ public class BusquedaBean implements Serializable {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Ingresa algo para buscar");
             FacesContext.getCurrentInstance().addMessage("search-msj", msg);
         }
+        return null;
+    }
+
+    public String buscarFiltros(){
+
+        try{
+            productos = productoServicio.listarProductosFiltros(busquedaParam, categoriaBuscada,ciudadBuscada, precioBuscado, calificacionBuscada);
+            //Falta que actualice en la vista
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 }
